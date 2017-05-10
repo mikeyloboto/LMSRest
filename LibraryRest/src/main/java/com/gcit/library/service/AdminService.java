@@ -5,6 +5,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.gcit.library.dao.AuthorDAO;
 import com.gcit.library.dao.BookDAO;
@@ -22,6 +26,7 @@ import com.gcit.library.entity.Genre;
 import com.gcit.library.entity.Loan;
 import com.gcit.library.entity.Publisher;
 
+@RestController
 public class AdminService {
 
 	@Autowired
@@ -49,6 +54,7 @@ public class AdminService {
 	PublisherDAO pdao;
 
 	@Transactional
+	@RequestMapping(value = "/addAuthor", method = RequestMethod.POST, consumes="application/json")
 	public void addAuthor(Author author) throws SQLException {
 		try {
 			adao.addAuthor(author);
@@ -58,6 +64,7 @@ public class AdminService {
 	}
 
 	@Transactional
+	@RequestMapping(value = "/addBook", method = RequestMethod.POST, consumes="application/json")
 	public void addBook(Book book) throws SQLException {
 		try {
 			Integer bookId = bdao.addBookWithID(book);
@@ -77,32 +84,7 @@ public class AdminService {
 	}
 
 	@Transactional
-	public void addGenre(Genre g) throws SQLException {
-		try {
-			gdao.addGenre(g);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Transactional
-	public void addPublisher(Publisher p) throws SQLException {
-		try {
-			pdao.addPublisher(p);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Transactional
-	public void addBranch(Branch b) throws SQLException {
-		try {
-			brdao.addBranch(b);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
+	@RequestMapping(value = "/addBorrower", method = RequestMethod.POST, consumes="application/json")
 	public void addBorrower(Borrower g) throws SQLException {
 		try {
 			bordao.addBorrower(g);
@@ -112,6 +94,27 @@ public class AdminService {
 	}
 
 	@Transactional
+	@RequestMapping(value = "/addBranch", method = RequestMethod.POST, consumes="application/json")
+	public void addBranch(Branch b) throws SQLException {
+		try {
+			brdao.addBranch(b);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Transactional
+	@RequestMapping(value = "/addGenre", method = RequestMethod.POST, consumes="application/json")
+	public void addGenre(Genre g) throws SQLException {
+		try {
+			gdao.addGenre(g);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/addLoan", method = RequestMethod.POST, consumes="application/json")
 	public void addLoan(Loan g) throws SQLException {
 		try {
 			ldao.addLoanBase(g);
@@ -121,197 +124,16 @@ public class AdminService {
 	}
 
 	@Transactional
-	public List<Author> getAllAuthors(Integer pageNo) throws SQLException {
+	@RequestMapping(value = "/addPublisher", method = RequestMethod.POST, consumes="application/json")
+	public void addPublisher(Publisher p) throws SQLException {
 		try {
-			return adao.readAllAuthors(pageNo);
+			pdao.addPublisher(p);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
 	}
 
-	@Transactional
-	public List<Book> getAllBooks(Integer pageNo) throws SQLException {
-		try {
-			return processAllBooks(bdao.readAllBooks(pageNo));
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public List<Genre> getAllGenres(Integer pageNo) throws SQLException {
-		try {
-			return gdao.readAllGenres(pageNo);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public List<Publisher> getAllPublishers(Integer pageNo) throws SQLException {
-		try {
-			return pdao.readAllPublishers(pageNo);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public List<Branch> getAllBranches(Integer pageNo) throws SQLException {
-		try {
-			return brdao.readAllBranches(pageNo);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public List<Borrower> getAllBorrowers(Integer pageNo) throws SQLException {
-		try {
-			return bordao.readAllBorrowers(pageNo);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public List<Loan> getAllLoans(Integer pageNo) throws SQLException {
-		try {
-			return ldao.readAllLoans(pageNo);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public Book getBookFromID(Integer id) throws SQLException {
-		try {
-			return processBook(bdao.readBookFromId(id));
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public Author getAuthorFromID(Integer id) throws SQLException {
-		try {
-			return adao.readAuthorByID(id);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public Genre getGenreFromID(Integer id) throws SQLException {
-		try {
-			return gdao.readGenreByID(id);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public Publisher getPublisherFromID(Integer id) throws SQLException {
-		try {
-			return pdao.readPublisherByID(id);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public Branch getBranchFromID(Integer id) throws SQLException {
-		try {
-			return brdao.readBranchByID(id);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public Borrower getBorrowerFromID(Integer id) throws SQLException {
-		try {
-			return bordao.readBorrowerByID(id);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public List<Book> getBooksFromName(Integer pageNo, String searchString) throws SQLException {
-		try {
-			return processAllBooks(bdao.readBookFromName("%" + searchString + "%", pageNo));
-			
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public List<Author> getAuthorsFromName(Integer pageNo, String searchString) throws SQLException {
-		try {
-			return adao.readAuthorsByName("%" + searchString + "%", pageNo);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public List<Genre> getGenresFromName(Integer pageNo, String searchString) throws SQLException {
-		try {
-			return gdao.readGenresByName("%" + searchString + "%", pageNo);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public List<Publisher> getPublishersFromName(int pageNo, String searchString) throws SQLException {
-		try {
-			return pdao.readPublishersByName("%" + searchString + "%", pageNo);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public List<Branch> getBranchesFromName(Integer pageNo, String searchString) throws SQLException {
-		try {
-			return brdao.readBranchesByName("%" + searchString + "%", pageNo);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public List<Borrower> getBorrowersFromName(Integer pageNo, String searchString) throws SQLException {
-		try {
-			return bordao.readBorrowersByName("%" + searchString + "%", pageNo);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
+	@RequestMapping(value = "/expandLoan", method = RequestMethod.POST, consumes="application/json", produces="application/json")
 	public Loan expandLoan(Loan loan) throws SQLException {
 		try {
 			return ldao.expandLoan(loan);
@@ -321,17 +143,77 @@ public class AdminService {
 		return null;
 	}
 
-//	@Transactional
-	public Integer getBookCount() throws SQLException {
+	@RequestMapping(value = "/getAllAuthors/{pageNo}", method = RequestMethod.GET, produces="application/json")
+	public List<Author> getAllAuthors(@PathVariable Integer pageNo) throws SQLException {
 		try {
-			return bdao.readBookCount();
+			return adao.readAllAuthors(pageNo);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	@Transactional
+	@RequestMapping(value = "/getAllBooks/{pageNo}", method = RequestMethod.GET, produces="application/json")
+	public List<Book> getAllBooks(@PathVariable Integer pageNo) throws SQLException {
+		try {
+			return processAllBooks(bdao.readAllBooks(pageNo));
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getAllBorrowers/{pageNo}", method = RequestMethod.GET, produces="application/json")
+	public List<Borrower> getAllBorrowers(@PathVariable Integer pageNo) throws SQLException {
+		try {
+			return bordao.readAllBorrowers(pageNo);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getAllBranches/{pageNo}", method = RequestMethod.GET, produces="application/json")
+	public List<Branch> getAllBranches(@PathVariable Integer pageNo) throws SQLException {
+		try {
+			return brdao.readAllBranches(pageNo);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getAllGenres/{pageNo}", method = RequestMethod.GET, produces="application/json")
+	public List<Genre> getAllGenres(@PathVariable Integer pageNo) throws SQLException {
+		try {
+			return gdao.readAllGenres(pageNo);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getAllLoans/{pageNo}", method = RequestMethod.GET, produces="application/json")
+	public List<Loan> getAllLoans(@PathVariable Integer pageNo) throws SQLException {
+		try {
+			return ldao.readAllLoans(pageNo);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getAllPublishers/{pageNo}", method = RequestMethod.GET, produces="application/json")
+	public List<Publisher> getAllPublishers(@PathVariable Integer pageNo) throws SQLException {
+		try {
+			return pdao.readAllPublishers(pageNo);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getAuthorCount", method = RequestMethod.GET, produces="application/json")
 	public Integer getAuthorCount() throws SQLException {
 		try {
 			return adao.readAuthorCount();
@@ -341,37 +223,78 @@ public class AdminService {
 		return null;
 	}
 
-	@Transactional
-	public Integer getGenreCount() throws SQLException {
+	@RequestMapping(value = "/getAuthorFromId/{id}", method = RequestMethod.GET, produces="application/json")
+	public Author getAuthorFromID(@PathVariable Integer id) throws SQLException {
 		try {
-			return gdao.readGenreCount();
+			return adao.readAuthorByID(id);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	@Transactional
-	public Integer getPublisherCount() throws SQLException {
+	@RequestMapping(value = "/getAuthorsFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces="application/json")
+	public List<Author> getAuthorsFromName(@PathVariable Integer pageNo, @PathVariable String searchString) throws SQLException {
 		try {
-			return pdao.getPublisherCount();
+			return adao.readAuthorsByName("%" + searchString + "%", pageNo);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	@Transactional
-	public Integer getBranchCount() throws SQLException {
+	@RequestMapping(value = "/getAuthorFromNameCount/{searchString}", method = RequestMethod.GET, produces="application/json")
+	public Integer getAuthorsFromNameCount(@PathVariable String searchString) throws SQLException {
 		try {
-			return brdao.readBranchCount();
+			return adao.readAuthorsCountByName("%" + searchString + "%");
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	@Transactional
+	@RequestMapping(value = "/getBookCount", method = RequestMethod.GET, produces="application/json")
+	public Integer getBookCount() throws SQLException {
+		try {
+			return bdao.readBookCount();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getBookFromId/{id}", method = RequestMethod.GET, produces="application/json")
+	public Book getBookFromID(@PathVariable Integer id) throws SQLException {
+		try {
+			return processBook(bdao.readBookFromId(id));
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getBooksFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces="application/json")
+	public List<Book> getBooksFromName(@PathVariable Integer pageNo, @PathVariable String searchString) throws SQLException {
+		try {
+			return processAllBooks(bdao.readBookFromName("%" + searchString + "%", pageNo));
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getBookFromNameCount/{searchString}", method = RequestMethod.GET, produces="application/json")
+	public Integer getBooksFromNameCount(@PathVariable String searchString) throws SQLException {
+		try {
+			return bdao.readBookCountByName("%" + searchString + "%");
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getBorrowerCount", method = RequestMethod.GET, produces="application/json")
 	public Integer getBorrowerCount() throws SQLException {
 		try {
 			return bordao.getBorrowerCount();
@@ -381,7 +304,117 @@ public class AdminService {
 		return null;
 	}
 
-	@Transactional
+	@RequestMapping(value = "/getBorrowerFromId/{id}", method = RequestMethod.GET, produces="application/json")
+	public Borrower getBorrowerFromID(@PathVariable Integer id) throws SQLException {
+		try {
+			return bordao.readBorrowerByID(id);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getBorrowersFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces="application/json")
+	public List<Borrower> getBorrowersFromName(@PathVariable Integer pageNo, @PathVariable String searchString) throws SQLException {
+		try {
+			return bordao.readBorrowersByName("%" + searchString + "%", pageNo);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getBorrowersFromNameCount/{searchString}", method = RequestMethod.GET, produces="application/json")
+	public Integer getBorrowersFromNameCount(@PathVariable String searchString) throws SQLException {
+		try {
+			return bordao.readBorrowersCountByName("%" + searchString + "%");
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getBranchCount", method = RequestMethod.GET, produces="application/json")
+	public Integer getBranchCount() throws SQLException {
+		try {
+			return brdao.readBranchCount();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getBranchesFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces="application/json")
+	public List<Branch> getBranchesFromName(@PathVariable Integer pageNo, @PathVariable String searchString) throws SQLException {
+		try {
+			return brdao.readBranchesByName("%" + searchString + "%", pageNo);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getBranchesFromNameCount/{searchString}", method = RequestMethod.GET, produces="application/json")
+	public Integer getBranchesFromNameCount(@PathVariable String searchString) throws SQLException {
+		try {
+			return brdao.readBranchesCountByName("%" + searchString + "%");
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getBranchFromId/{id}", method = RequestMethod.GET, produces="application/json")
+	public Branch getBranchFromID(@PathVariable Integer id) throws SQLException {
+		try {
+			return brdao.readBranchByID(id);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getGenreCount", method = RequestMethod.GET, produces="application/json")
+	public Integer getGenreCount() throws SQLException {
+		try {
+			return gdao.readGenreCount();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getGenreFromId/{id}", method = RequestMethod.GET, produces="application/json")
+	public Genre getGenreFromID(@PathVariable Integer id) throws SQLException {
+		try {
+			return gdao.readGenreByID(id);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getGenresFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces="application/json")
+	public List<Genre> getGenresFromName(@PathVariable Integer pageNo, @PathVariable String searchString) throws SQLException {
+		try {
+			return gdao.readGenresByName("%" + searchString + "%", pageNo);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getGenresFromNameCount/{searchString}", method = RequestMethod.GET, produces="application/json")
+	public Integer getGenresFromNameCount(@PathVariable String searchString) throws SQLException {
+		try {
+			return gdao.readGenresCountByName("%" + searchString + "%");
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/getLoanCount", method = RequestMethod.GET, produces="application/json")
 	public Integer getLoanCount() throws SQLException {
 		try {
 			return ldao.getLoanCount();
@@ -391,38 +424,38 @@ public class AdminService {
 		return null;
 	}
 
-	@Transactional
-	public Integer getBooksFromNameCount(String searchString) throws SQLException {
+	@RequestMapping(value = "/getPublisherCount", method = RequestMethod.GET, produces="application/json")
+	public Integer getPublisherCount() throws SQLException {
 		try {
-			return bdao.readBookCountByName("%" + searchString + "%");
+			return pdao.getPublisherCount();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	@Transactional
-	public Integer getAuthorsFromNameCount(String searchString) throws SQLException {
+	@RequestMapping(value = "/getPublisherFromId/{id}", method = RequestMethod.GET, produces="application/json")
+	public Publisher getPublisherFromID(@PathVariable Integer id) throws SQLException {
 		try {
-			return adao.readAuthorsCountByName("%" + searchString + "%");
+			return pdao.readPublisherByID(id);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	@Transactional
-	public Integer getGenresFromNameCount(String searchString) throws SQLException {
+	@RequestMapping(value = "/getPublishersFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces="application/json")
+	public List<Publisher> getPublishersFromName(@PathVariable Integer pageNo, @PathVariable String searchString) throws SQLException {
 		try {
-			return gdao.readGenresCountByName("%" + searchString + "%");
+			return pdao.readPublishersByName("%" + searchString + "%", pageNo);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	@Transactional
-	public Integer getPublishersFromNameCount(String searchString) throws SQLException {
+	@RequestMapping(value = "/getPublisherFromNameCount/{searchString}", method = RequestMethod.GET, produces="application/json")
+	public Integer getPublishersFromNameCount(@PathVariable String searchString) throws SQLException {
 		try {
 			return pdao.readPublishersCountByName("%" + searchString + "%");
 		} catch (ClassNotFoundException | SQLException e) {
@@ -432,80 +465,17 @@ public class AdminService {
 	}
 
 	@Transactional
-	public Integer getBranchesFromNameCount(String searchString) throws SQLException {
+	@RequestMapping(value = "/modAuthor", method = RequestMethod.POST, consumes="application/json")
+	public void modAuthor(Author author) throws SQLException {
 		try {
-			return brdao.readBranchesCountByName("%" + searchString + "%");
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public Integer getBorrowersFromNameCount(String searchString) throws SQLException {
-		try {
-			return bordao.readBorrowersCountByName("%" + searchString + "%");
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Transactional
-	public void removeBook(Integer bookId) throws SQLException {
-		try {
-			bdao.deleteBook(bookId);
+			adao.updateAuthor(author);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Transactional
-	public void removeAuthor(Integer authorId) throws SQLException {
-		try {
-			adao.deleteAuthor(authorId);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Transactional
-	public void removeGenre(Integer genreId) throws SQLException {
-		try {
-			gdao.deleteGenre(genreId);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Transactional
-	public void removePublisher(Integer publisherId) throws SQLException {
-		try {
-			pdao.deletePublisher(publisherId);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Transactional
-	public void removeBranch(Integer branchId) throws SQLException {
-		try {
-			brdao.deleteBranch(branchId);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Transactional
-	public void removeBorrower(Integer borrowerId) throws SQLException {
-		try {
-			bordao.deleteBorrower(borrowerId);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Transactional
+	@RequestMapping(value = "/modBook", method = RequestMethod.POST, consumes="application/json")
 	public void modBook(Book book) throws SQLException {
 		try {
 			bdao.updateBookPublisher(book);
@@ -527,54 +497,110 @@ public class AdminService {
 	}
 
 	@Transactional
-	public void modAuthor(Author author) throws SQLException {
+	@RequestMapping(value = "/modBorrower", method = RequestMethod.POST, consumes="application/json")
+	public void modBorrower(Borrower borrower) throws SQLException {
 		try {
-			adao.updateAuthor(author);
+			bordao.updateBorrower(borrower);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Transactional
-	public void modGenre(Genre g) throws SQLException {
+	@RequestMapping(value = "/modBranch", method = RequestMethod.POST, consumes="application/json")
+	public void modBranch(Branch branch) throws SQLException {
 		try {
-			gdao.updateGenre(g);
+			brdao.updateBranch(branch);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Transactional
-	public void modPublisher(Publisher p) throws SQLException {
+	@RequestMapping(value = "/modGenre", method = RequestMethod.POST, consumes="application/json")
+	public void modGenre(Genre genre) throws SQLException {
 		try {
-			pdao.updatePublisher(p);
+			gdao.updateGenre(genre);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Transactional
-	public void modBranch(Branch g) throws SQLException {
+	@RequestMapping(value = "/modLoan", method = RequestMethod.POST, consumes="application/json")
+	public void modLoan(Loan loan) throws SQLException {
 		try {
-			brdao.updateBranch(g);
+			ldao.updateLoan(loan);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Transactional
-	public void modBorrower(Borrower g) throws SQLException {
+	@RequestMapping(value = "/modPublisher", method = RequestMethod.POST, consumes="application/json")
+	public void modPublisher(Publisher publisher) throws SQLException {
 		try {
-			bordao.updateBorrower(g);
+			pdao.updatePublisher(publisher);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Transactional
-	public void modLoan(Loan g) throws SQLException {
+	@RequestMapping(value = "/removeAuthor/{authorId}", method = RequestMethod.GET)
+	public void removeAuthor(@PathVariable Integer authorId) throws SQLException {
 		try {
-			ldao.updateLoan(g);
+			adao.deleteAuthor(authorId);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Transactional
+	@RequestMapping(value = "/removeBook/{bookId}", method = RequestMethod.GET)
+	public void removeBook(@PathVariable Integer bookId) throws SQLException {
+		try {
+			bdao.deleteBook(bookId);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Transactional
+	@RequestMapping(value = "/removeBorrower/{borrowerId}", method = RequestMethod.GET)
+	public void removeBorrower(@PathVariable Integer borrowerId) throws SQLException {
+		try {
+			bordao.deleteBorrower(borrowerId);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Transactional
+	@RequestMapping(value = "/removeBranch/{branchId}", method = RequestMethod.GET)
+	public void removeBranch(@PathVariable Integer branchId) throws SQLException {
+		try {
+			brdao.deleteBranch(branchId);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/removeGenre/{genreId}", method = RequestMethod.GET)
+	public void removeGenre(@PathVariable Integer genreId) throws SQLException {
+		try {
+			gdao.deleteGenre(genreId);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/removePublisher/{publisherId}", method = RequestMethod.GET)
+	public void removePublisher(@PathVariable Integer publisherId) throws SQLException {
+		try {
+			pdao.deletePublisher(publisherId);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -586,7 +612,7 @@ public class AdminService {
 		}
 		return books;
 	}
-	
+
 	private Book processBook(Book b) {
 		b.setAuthors(adao.readAllAuthorsForBook(b.getBookId()));
 		b.setPublisher(pdao.readPublisherByBookId(b.getBookId()));
