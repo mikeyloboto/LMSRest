@@ -48,16 +48,6 @@ public class LibrarianService {
 	@Autowired
 	PublisherDAO pdao;
 
-	@RequestMapping(value = "/getBookCountInBranch", method = RequestMethod.POST, consumes="application/json", produces="application/json")
-	public Integer getBookCountInBranch(Branch branch) throws SQLException {
-		try {
-			return bdao.readBookCopiesCountInBranch(branch);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	@RequestMapping(value = "/getAllBooksInBranch/{pageNo}", method = RequestMethod.POST, consumes="application/json", produces="application/json")
 	public Map<Book, Integer> getAllBooksInBranch(Branch branch, @PathVariable Integer pageNo) throws SQLException {
 		try {
@@ -82,14 +72,14 @@ public class LibrarianService {
 		return null;
 	}
 
-	@Transactional
-	@RequestMapping(value = "/updateBookCopiesInBranch", method = RequestMethod.POST, consumes="application/json")
-	public void updateBookCopiesInBranch(Branch br, Book book, Integer copies) throws SQLException {
+	@RequestMapping(value = "/getBookCountInBranch", method = RequestMethod.POST, consumes="application/json", produces="application/json")
+	public Integer getBookCountInBranch(Branch branch) throws SQLException {
 		try {
-			cdao.modCopies(br, book, copies);
+			return bdao.readBookCopiesCountInBranch(branch);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	@Transactional
@@ -97,6 +87,16 @@ public class LibrarianService {
 	public void incrementBookCopiesInBranch(Branch br, Book book, Integer increment) throws SQLException {
 		try {
 			cdao.incrementCopies(br, book, increment);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Transactional
+	@RequestMapping(value = "/updateBookCopiesInBranch", method = RequestMethod.POST, consumes="application/json")
+	public void updateBookCopiesInBranch(Branch br, Book book, Integer copies) throws SQLException {
+		try {
+			cdao.modCopies(br, book, copies);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
