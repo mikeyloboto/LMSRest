@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,8 +49,8 @@ public class LibrarianService {
 	@Autowired
 	PublisherDAO pdao;
 
-	@RequestMapping(value = "/getAllBooksInBranch/{pageNo}", method = RequestMethod.POST, consumes="application/json", produces="application/json")
-	public Map<Book, Integer> getAllBooksInBranch(Branch branch, @PathVariable Integer pageNo) throws SQLException {
+	@RequestMapping(value = "/getAllBooksInBranchTestTest/{pageNo}", method = RequestMethod.POST, consumes="application/json", produces="application/json")
+	public Map<Book, Integer> getAllBooksInBranch(@RequestBody Branch branch, @PathVariable Integer pageNo) throws SQLException {
 		try {
 			return cdao.readCopiesFirstLevel(branch, pageNo);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -72,7 +73,7 @@ public class LibrarianService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getBookCountInBranch", method = RequestMethod.POST, consumes="application/json", produces="application/json")
+	@RequestMapping(value = "/getAllBookCountInBranch", method = RequestMethod.POST, consumes="application/json", produces="application/json")
 	public Integer getBookCountInBranch(Branch branch) throws SQLException {
 		try {
 			return bdao.readBookCopiesCountInBranch(branch);

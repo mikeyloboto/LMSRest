@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,19 +54,20 @@ public class AdminService {
 	@Autowired
 	PublisherDAO pdao;
 
-	@Transactional
-	@RequestMapping(value = "/addAuthor", method = RequestMethod.POST, consumes="application/json")
-	public void addAuthor(Author author) throws SQLException {
-		try {
-			adao.addAuthor(author);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
+	// @Transactional
+	// @RequestMapping(value = "/author", method = RequestMethod.PUT,
+	// consumes="application/json")
+	// public void addAuthor(@RequestBody Author author) throws SQLException {
+	// try {
+	// adao.addAuthor(author);
+	// } catch (ClassNotFoundException | SQLException e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 	@Transactional
-	@RequestMapping(value = "/addBook", method = RequestMethod.POST, consumes="application/json")
-	public void addBook(Book book) throws SQLException {
+	@RequestMapping(value = "/addBook", method = RequestMethod.POST, consumes = "application/json")
+	public void addBook(@RequestBody Book book) throws SQLException {
 		try {
 			Integer bookId = bdao.addBookWithID(book);
 			if (book.getAuthors() != null && !book.getAuthors().isEmpty()) {
@@ -84,8 +86,8 @@ public class AdminService {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/addBorrower", method = RequestMethod.POST, consumes="application/json")
-	public void addBorrower(Borrower g) throws SQLException {
+	@RequestMapping(value = "/addBorrower", method = RequestMethod.POST, consumes = "application/json")
+	public void addBorrower(@RequestBody Borrower g) throws SQLException {
 		try {
 			bordao.addBorrower(g);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -94,8 +96,8 @@ public class AdminService {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/addBranch", method = RequestMethod.POST, consumes="application/json")
-	public void addBranch(Branch b) throws SQLException {
+	@RequestMapping(value = "/addBranch", method = RequestMethod.POST, consumes = "application/json")
+	public void addBranch(@RequestBody Branch b) throws SQLException {
 		try {
 			brdao.addBranch(b);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -104,18 +106,18 @@ public class AdminService {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/addGenre", method = RequestMethod.POST, consumes="application/json")
-	public void addGenre(Genre g) throws SQLException {
+	@RequestMapping(value = "/addGenre", method = RequestMethod.POST, consumes = "application/json")
+	public void addGenre(@RequestBody Genre g) throws SQLException {
 		try {
 			gdao.addGenre(g);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Transactional
-	@RequestMapping(value = "/addLoan", method = RequestMethod.POST, consumes="application/json")
-	public void addLoan(Loan g) throws SQLException {
+	@RequestMapping(value = "/addLoan", method = RequestMethod.POST, consumes = "application/json")
+	public void addLoan(@RequestBody Loan g) throws SQLException {
 		try {
 			ldao.addLoanBase(g);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -124,8 +126,8 @@ public class AdminService {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/addPublisher", method = RequestMethod.POST, consumes="application/json")
-	public void addPublisher(Publisher p) throws SQLException {
+	@RequestMapping(value = "/addPublisher", method = RequestMethod.POST, consumes = "application/json")
+	public void addPublisher(@RequestBody Publisher p) throws SQLException {
 		try {
 			pdao.addPublisher(p);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -133,8 +135,8 @@ public class AdminService {
 		}
 	}
 
-	@RequestMapping(value = "/expandLoan", method = RequestMethod.POST, consumes="application/json", produces="application/json")
-	public Loan expandLoan(Loan loan) throws SQLException {
+	@RequestMapping(value = "/expandLoan", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	public Loan expandLoan(@RequestBody Loan loan) throws SQLException {
 		try {
 			return ldao.expandLoan(loan);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -143,8 +145,18 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getAllAuthors/{pageNo}", method = RequestMethod.GET, produces="application/json")
-	public List<Author> getAllAuthors(@PathVariable Integer pageNo) throws SQLException {
+	@RequestMapping(value = "/author/all", method = RequestMethod.GET, produces = "application/json")
+	public List<Author> getAllAuthors() throws SQLException {
+		try {
+			return adao.readAllAuthors(null);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/author/all/{pageNo}", method = RequestMethod.GET, produces = "application/json")
+	public List<Author> getAllAuthorsPaged(@PathVariable Integer pageNo) throws SQLException {
 		try {
 			return adao.readAllAuthors(pageNo);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -153,7 +165,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getAllBooks/{pageNo}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getAllBooks/{pageNo}", method = RequestMethod.GET, produces = "application/json")
 	public List<Book> getAllBooks(@PathVariable Integer pageNo) throws SQLException {
 		try {
 			return processAllBooks(bdao.readAllBooks(pageNo));
@@ -163,7 +175,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getAllBorrowers/{pageNo}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getAllBorrowers/{pageNo}", method = RequestMethod.GET, produces = "application/json")
 	public List<Borrower> getAllBorrowers(@PathVariable Integer pageNo) throws SQLException {
 		try {
 			return bordao.readAllBorrowers(pageNo);
@@ -173,7 +185,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getAllBranches/{pageNo}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getAllBranches/{pageNo}", method = RequestMethod.GET, produces = "application/json")
 	public List<Branch> getAllBranches(@PathVariable Integer pageNo) throws SQLException {
 		try {
 			return brdao.readAllBranches(pageNo);
@@ -183,7 +195,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getAllGenres/{pageNo}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getAllGenres/{pageNo}", method = RequestMethod.GET, produces = "application/json")
 	public List<Genre> getAllGenres(@PathVariable Integer pageNo) throws SQLException {
 		try {
 			return gdao.readAllGenres(pageNo);
@@ -193,7 +205,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getAllLoans/{pageNo}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getAllLoans/{pageNo}", method = RequestMethod.GET, produces = "application/json")
 	public List<Loan> getAllLoans(@PathVariable Integer pageNo) throws SQLException {
 		try {
 			return ldao.readAllLoans(pageNo);
@@ -203,7 +215,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getAllPublishers/{pageNo}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getAllPublishers/{pageNo}", method = RequestMethod.GET, produces = "application/json")
 	public List<Publisher> getAllPublishers(@PathVariable Integer pageNo) throws SQLException {
 		try {
 			return pdao.readAllPublishers(pageNo);
@@ -213,7 +225,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getAuthorCount", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/author/count", method = RequestMethod.GET, produces = "application/json")
 	public Integer getAuthorCount() throws SQLException {
 		try {
 			return adao.readAuthorCount();
@@ -223,7 +235,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getAuthorFromId/{id}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/author/{id}", method = RequestMethod.GET, produces = "application/json")
 	public Author getAuthorFromID(@PathVariable Integer id) throws SQLException {
 		try {
 			return adao.readAuthorByID(id);
@@ -233,8 +245,9 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getAuthorsFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces="application/json")
-	public List<Author> getAuthorsFromName(@PathVariable Integer pageNo, @PathVariable String searchString) throws SQLException {
+	@RequestMapping(value = "/author/search/{searchString}/{pageNo}", method = RequestMethod.GET, produces = "application/json")
+	public List<Author> getAuthorsFromNamePaged(@PathVariable String searchString, @PathVariable Integer pageNo)
+			throws SQLException {
 		try {
 			return adao.readAuthorsByName("%" + searchString + "%", pageNo);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -243,7 +256,17 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getAuthorFromNameCount/{searchString}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/author/search/{searchString}", method = RequestMethod.GET, produces = "application/json")
+	public List<Author> getAuthorsFromName(@PathVariable String searchString) throws SQLException {
+		try {
+			return adao.readAuthorsByName("%" + searchString + "%", null);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/author/{searchString}/count", method = RequestMethod.GET, produces = "application/json")
 	public Integer getAuthorsFromNameCount(@PathVariable String searchString) throws SQLException {
 		try {
 			return adao.readAuthorsCountByName("%" + searchString + "%");
@@ -253,7 +276,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getBookCount", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getBookCount", method = RequestMethod.GET, produces = "application/json")
 	public Integer getBookCount() throws SQLException {
 		try {
 			return bdao.readBookCount();
@@ -263,7 +286,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getBookFromId/{id}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getBookFromId/{id}", method = RequestMethod.GET, produces = "application/json")
 	public Book getBookFromID(@PathVariable Integer id) throws SQLException {
 		try {
 			return processBook(bdao.readBookFromId(id));
@@ -273,18 +296,19 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getBooksFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces="application/json")
-	public List<Book> getBooksFromName(@PathVariable Integer pageNo, @PathVariable String searchString) throws SQLException {
+	@RequestMapping(value = "/getBooksFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces = "application/json")
+	public List<Book> getBooksFromName(@PathVariable Integer pageNo, @PathVariable String searchString)
+			throws SQLException {
 		try {
 			return processAllBooks(bdao.readBookFromName("%" + searchString + "%", pageNo));
-			
+
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	@RequestMapping(value = "/getBookFromNameCount/{searchString}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getBookFromNameCount/{searchString}", method = RequestMethod.GET, produces = "application/json")
 	public Integer getBooksFromNameCount(@PathVariable String searchString) throws SQLException {
 		try {
 			return bdao.readBookCountByName("%" + searchString + "%");
@@ -294,7 +318,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getBorrowerCount", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getBorrowerCount", method = RequestMethod.GET, produces = "application/json")
 	public Integer getBorrowerCount() throws SQLException {
 		try {
 			return bordao.getBorrowerCount();
@@ -304,7 +328,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getBorrowerFromId/{id}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getBorrowerFromId/{id}", method = RequestMethod.GET, produces = "application/json")
 	public Borrower getBorrowerFromID(@PathVariable Integer id) throws SQLException {
 		try {
 			return bordao.readBorrowerByID(id);
@@ -314,8 +338,9 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getBorrowersFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces="application/json")
-	public List<Borrower> getBorrowersFromName(@PathVariable Integer pageNo, @PathVariable String searchString) throws SQLException {
+	@RequestMapping(value = "/getBorrowersFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces = "application/json")
+	public List<Borrower> getBorrowersFromName(@PathVariable Integer pageNo, @PathVariable String searchString)
+			throws SQLException {
 		try {
 			return bordao.readBorrowersByName("%" + searchString + "%", pageNo);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -324,7 +349,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getBorrowersFromNameCount/{searchString}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getBorrowersFromNameCount/{searchString}", method = RequestMethod.GET, produces = "application/json")
 	public Integer getBorrowersFromNameCount(@PathVariable String searchString) throws SQLException {
 		try {
 			return bordao.readBorrowersCountByName("%" + searchString + "%");
@@ -334,7 +359,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getBranchCount", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getBranchCount", method = RequestMethod.GET, produces = "application/json")
 	public Integer getBranchCount() throws SQLException {
 		try {
 			return brdao.readBranchCount();
@@ -344,8 +369,9 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getBranchesFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces="application/json")
-	public List<Branch> getBranchesFromName(@PathVariable Integer pageNo, @PathVariable String searchString) throws SQLException {
+	@RequestMapping(value = "/getBranchesFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces = "application/json")
+	public List<Branch> getBranchesFromName(@PathVariable Integer pageNo, @PathVariable String searchString)
+			throws SQLException {
 		try {
 			return brdao.readBranchesByName("%" + searchString + "%", pageNo);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -354,7 +380,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getBranchesFromNameCount/{searchString}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getBranchesFromNameCount/{searchString}", method = RequestMethod.GET, produces = "application/json")
 	public Integer getBranchesFromNameCount(@PathVariable String searchString) throws SQLException {
 		try {
 			return brdao.readBranchesCountByName("%" + searchString + "%");
@@ -364,7 +390,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getBranchFromId/{id}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getBranchFromId/{id}", method = RequestMethod.GET, produces = "application/json")
 	public Branch getBranchFromID(@PathVariable Integer id) throws SQLException {
 		try {
 			return brdao.readBranchByID(id);
@@ -374,7 +400,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getGenreCount", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getGenreCount", method = RequestMethod.GET, produces = "application/json")
 	public Integer getGenreCount() throws SQLException {
 		try {
 			return gdao.readGenreCount();
@@ -384,7 +410,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getGenreFromId/{id}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getGenreFromId/{id}", method = RequestMethod.GET, produces = "application/json")
 	public Genre getGenreFromID(@PathVariable Integer id) throws SQLException {
 		try {
 			return gdao.readGenreByID(id);
@@ -394,8 +420,9 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getGenresFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces="application/json")
-	public List<Genre> getGenresFromName(@PathVariable Integer pageNo, @PathVariable String searchString) throws SQLException {
+	@RequestMapping(value = "/getGenresFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces = "application/json")
+	public List<Genre> getGenresFromName(@PathVariable Integer pageNo, @PathVariable String searchString)
+			throws SQLException {
 		try {
 			return gdao.readGenresByName("%" + searchString + "%", pageNo);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -404,7 +431,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getGenresFromNameCount/{searchString}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getGenresFromNameCount/{searchString}", method = RequestMethod.GET, produces = "application/json")
 	public Integer getGenresFromNameCount(@PathVariable String searchString) throws SQLException {
 		try {
 			return gdao.readGenresCountByName("%" + searchString + "%");
@@ -414,7 +441,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getLoanCount", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getLoanCount", method = RequestMethod.GET, produces = "application/json")
 	public Integer getLoanCount() throws SQLException {
 		try {
 			return ldao.getLoanCount();
@@ -424,7 +451,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getPublisherCount", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getPublisherCount", method = RequestMethod.GET, produces = "application/json")
 	public Integer getPublisherCount() throws SQLException {
 		try {
 			return pdao.getPublisherCount();
@@ -434,7 +461,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getPublisherFromId/{id}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getPublisherFromId/{id}", method = RequestMethod.GET, produces = "application/json")
 	public Publisher getPublisherFromID(@PathVariable Integer id) throws SQLException {
 		try {
 			return pdao.readPublisherByID(id);
@@ -444,8 +471,9 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getPublishersFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces="application/json")
-	public List<Publisher> getPublishersFromName(@PathVariable Integer pageNo, @PathVariable String searchString) throws SQLException {
+	@RequestMapping(value = "/getPublishersFromName/{pageNo}/{searchString}", method = RequestMethod.GET, produces = "application/json")
+	public List<Publisher> getPublishersFromName(@PathVariable Integer pageNo, @PathVariable String searchString)
+			throws SQLException {
 		try {
 			return pdao.readPublishersByName("%" + searchString + "%", pageNo);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -454,7 +482,7 @@ public class AdminService {
 		return null;
 	}
 
-	@RequestMapping(value = "/getPublisherFromNameCount/{searchString}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/getPublisherFromNameCount/{searchString}", method = RequestMethod.GET, produces = "application/json")
 	public Integer getPublishersFromNameCount(@PathVariable String searchString) throws SQLException {
 		try {
 			return pdao.readPublishersCountByName("%" + searchString + "%");
@@ -465,17 +493,21 @@ public class AdminService {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/modAuthor", method = RequestMethod.POST, consumes="application/json")
-	public void modAuthor(Author author) throws SQLException {
+	@RequestMapping(value = "/author", method = RequestMethod.PUT, consumes = "application/json")
+	public void putAuthor(@RequestBody Author author) throws SQLException {
 		try {
-			adao.updateAuthor(author);
+			Author temp = adao.readAuthorByID(author.getAuthorId());
+			if (temp != null)
+				adao.updateAuthor(author);
+			else
+				adao.addAuthor(author);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Transactional
-	@RequestMapping(value = "/modBook", method = RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value = "/modBook", method = RequestMethod.POST, consumes = "application/json")
 	public void modBook(Book book) throws SQLException {
 		try {
 			bdao.updateBookPublisher(book);
@@ -497,7 +529,7 @@ public class AdminService {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/modBorrower", method = RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value = "/modBorrower", method = RequestMethod.POST, consumes = "application/json")
 	public void modBorrower(Borrower borrower) throws SQLException {
 		try {
 			bordao.updateBorrower(borrower);
@@ -507,7 +539,7 @@ public class AdminService {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/modBranch", method = RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value = "/modBranch", method = RequestMethod.POST, consumes = "application/json")
 	public void modBranch(Branch branch) throws SQLException {
 		try {
 			brdao.updateBranch(branch);
@@ -517,7 +549,7 @@ public class AdminService {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/modGenre", method = RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value = "/modGenre", method = RequestMethod.POST, consumes = "application/json")
 	public void modGenre(Genre genre) throws SQLException {
 		try {
 			gdao.updateGenre(genre);
@@ -527,7 +559,7 @@ public class AdminService {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/modLoan", method = RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value = "/modLoan", method = RequestMethod.POST, consumes = "application/json")
 	public void modLoan(Loan loan) throws SQLException {
 		try {
 			ldao.updateLoan(loan);
@@ -537,7 +569,7 @@ public class AdminService {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/modPublisher", method = RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value = "/modPublisher", method = RequestMethod.POST, consumes = "application/json")
 	public void modPublisher(Publisher publisher) throws SQLException {
 		try {
 			pdao.updatePublisher(publisher);
@@ -547,7 +579,7 @@ public class AdminService {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/removeAuthor/{authorId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/author/{authorId}", method = RequestMethod.DELETE)
 	public void removeAuthor(@PathVariable Integer authorId) throws SQLException {
 		try {
 			adao.deleteAuthor(authorId);
@@ -585,7 +617,7 @@ public class AdminService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Transactional
 	@RequestMapping(value = "/removeGenre/{genreId}", method = RequestMethod.GET)
 	public void removeGenre(@PathVariable Integer genreId) throws SQLException {
@@ -595,7 +627,7 @@ public class AdminService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Transactional
 	@RequestMapping(value = "/removePublisher/{publisherId}", method = RequestMethod.GET)
 	public void removePublisher(@PathVariable Integer publisherId) throws SQLException {
@@ -605,7 +637,7 @@ public class AdminService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private List<Book> processAllBooks(List<Book> books) {
 		for (Book b : books) {
 			processBook(b);

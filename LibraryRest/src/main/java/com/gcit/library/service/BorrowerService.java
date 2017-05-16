@@ -1,7 +1,6 @@
 package com.gcit.library.service;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import com.gcit.library.dao.GenreDAO;
 import com.gcit.library.dao.LoanDAO;
 import com.gcit.library.dao.PublisherDAO;
 import com.gcit.library.entity.Book;
-import com.gcit.library.entity.Borrower;
 import com.gcit.library.entity.Branch;
 import com.gcit.library.entity.Loan;
 

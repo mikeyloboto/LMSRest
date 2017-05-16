@@ -1,8 +1,13 @@
 package com.gcit.library;
 
+import java.net.UnknownHostException;
+
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -16,6 +21,9 @@ import com.gcit.library.dao.GenreDAO;
 import com.gcit.library.dao.LoanDAO;
 import com.gcit.library.dao.PublisherDAO;
 import com.gcit.library.service.AdminService;
+import com.gcit.library.service.BorrowerService;
+import com.gcit.library.service.LibrarianService;
+import com.mongodb.MongoClient;
 
 @Configuration
 public class LMSConfig {
@@ -91,5 +99,25 @@ public class LMSConfig {
 	@Bean
 	public AdminService adminService() {
 		return new AdminService();
+	}
+	
+	@Bean
+	public LibrarianService librarianService() {
+		return new LibrarianService();
+	}
+	
+	@Bean
+	public BorrowerService borrowerService() {
+		return new BorrowerService();
+	}
+	
+	@Bean 
+	public MongoDbFactory mongoDbFactory() throws UnknownHostException {
+		return new SimpleMongoDbFactory(new MongoClient(), "local");
+	}
+	
+	@Bean
+	public MongoTemplate mongoTemplate() throws UnknownHostException {
+		return new MongoTemplate(mongoDbFactory());
 	}
 }
