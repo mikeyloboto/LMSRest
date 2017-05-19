@@ -1,0 +1,61 @@
+<ol class="breadcrumb">
+	<li><a href="#/home">Home</a></li>
+	<li><a href="#/admin">Administrator</a></li>
+	<li class="active">Book Management</li>
+</ol>
+<div class="container" ng-controller="bookController">
+	<div>
+		<button type="button" class="btn btn-success"
+			ng-click="showAddBookModal()">Add New Book</button>
+		<div class="page-header">
+			<h1>List of Existing Books in LMS</h1>
+		</div>
+		<form action="searchBooks">
+			<input type="text" class="form-control" ng-model="searchString"
+				placeholder="Search..." ng-change="searchBooks()">
+		</form>
+		<nav aria-label="Page navigation">
+			<ul class="pagination">
+				<li><a href="" ng-click="pagination.prevPage()">&laquo;</a></li>
+				<li ng-repeat="n in [] | range: pagination.numPages"
+					ng-class="{active: n == pagination.page}"><a href=""
+					ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+				<li><a href="" ng-click="pagination.nextPage()">&raquo;</a></li>
+			</ul>
+		</nav>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Book Name</th>
+					<th>Genre(s)</th>
+					<th>Publisher</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody id="tableBook">
+				<tr
+					ng-repeat="b in books | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+					<td>{{$index+1+(pagination.page*pagination.perPage)}}</td>
+					<td>{{b.description}}</td>
+					<td>{{b.genreList}}</td>
+					<td>{{b.publisher.publisherName}}
+					<td><button type="button" class="btn btn-primary"
+							ng-click="showEditBookModal(b.bookId)">Update</button></td>
+					<td><button type="button" class="btn btn-danger"
+							ng-click="deleteBook(b.bookId)">Delete</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="modal fade bs-example-modal-lg" id="bookModal"
+		modal="bookModal" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div ng-include="'adminBookModal.html'"></div>
+			</div>
+		</div>
+	</div>
+</div>
