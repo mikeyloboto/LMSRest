@@ -423,7 +423,7 @@ public class AdminService {
 	}
 
 	@RequestMapping(value = "/borrowers/search/{searchString}/{pageNo}", method = RequestMethod.GET, produces = "application/json")
-	public List<Borrower> getBorrowersFromName(@PathVariable String searchString, @PathVariable Integer pageNo)
+	public List<Borrower> getBorrowersFromNamePaged(@PathVariable String searchString, @PathVariable Integer pageNo)
 			throws SQLException {
 		try {
 			return bordao.readBorrowersByName("%" + searchString + "%", pageNo);
@@ -432,8 +432,19 @@ public class AdminService {
 		}
 		return null;
 	}
-
+	
 	@RequestMapping(value = "/borrowers/search/{searchString}", method = RequestMethod.GET, produces = "application/json")
+	public List<Borrower> getBorrowersFromName(@PathVariable String searchString)
+			throws SQLException {
+		try {
+			return bordao.readBorrowersByName("%" + searchString + "%", null);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/borrowers/search/{searchString}/count", method = RequestMethod.GET, produces = "application/json")
 	public Integer getBorrowersFromNameCount(@PathVariable String searchString) throws SQLException {
 		try {
 			return bordao.readBorrowersCountByName("%" + searchString + "%");
@@ -454,10 +465,21 @@ public class AdminService {
 	}
 
 	@RequestMapping(value = "/branches/search/{searchString}/{pageNo}", method = RequestMethod.GET, produces = "application/json")
-	public List<Branch> getBranchesFromName(@PathVariable String searchString, @PathVariable Integer pageNo)
+	public List<Branch> getBranchesFromNamePaged(@PathVariable String searchString, @PathVariable Integer pageNo)
 			throws SQLException {
 		try {
 			return brdao.readBranchesByName("%" + searchString + "%", pageNo);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@RequestMapping(value = "/branches/search/{searchString}", method = RequestMethod.GET, produces = "application/json")
+	public List<Branch> getBranchesFromName(@PathVariable String searchString)
+			throws SQLException {
+		try {
+			return brdao.readBranchesByName("%" + searchString + "%", null);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -505,10 +527,21 @@ public class AdminService {
 	}
 
 	@RequestMapping(value = "/genres/search/{searchString}/{pageNo}", method = RequestMethod.GET, produces = "application/json")
-	public List<Genre> getGenresFromName(@PathVariable String searchString, @PathVariable Integer pageNo)
+	public List<Genre> getGenresFromNamePaged(@PathVariable String searchString, @PathVariable Integer pageNo)
 			throws SQLException {
 		try {
 			return gdao.readGenresByName("%" + searchString + "%", pageNo);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@RequestMapping(value = "/genres/search/{searchString}", method = RequestMethod.GET, produces = "application/json")
+	public List<Genre> getGenresFromName(@PathVariable String searchString)
+			throws SQLException {
+		try {
+			return gdao.readGenresByName("%" + searchString + "%", null);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -556,7 +589,7 @@ public class AdminService {
 	}
 
 	@RequestMapping(value = "/publishers/search/{searchString}/{pageNo}", method = RequestMethod.GET, produces = "application/json")
-	public List<Publisher> getPublishersFromName(@PathVariable String searchString, @PathVariable Integer pageNo)
+	public List<Publisher> getPublishersFromNamePaged(@PathVariable String searchString, @PathVariable Integer pageNo)
 			throws SQLException {
 		try {
 			return pdao.readPublishersByName("%" + searchString + "%", pageNo);
@@ -565,8 +598,19 @@ public class AdminService {
 		}
 		return null;
 	}
+	
+	@RequestMapping(value = "/publishers/search/{searchString}", method = RequestMethod.GET, produces = "application/json")
+	public List<Publisher> getPublishersFromName(@PathVariable String searchString)
+			throws SQLException {
+		try {
+			return pdao.readPublishersByName("%" + searchString + "%", null);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-	@RequestMapping(value = "/publishers/seach/{searchString}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/publishers/search/{searchString}/count", method = RequestMethod.GET, produces = "application/json")
 	public Integer getPublishersFromNameCount(@PathVariable String searchString) throws SQLException {
 		try {
 			return pdao.readPublishersCountByName("%" + searchString + "%");

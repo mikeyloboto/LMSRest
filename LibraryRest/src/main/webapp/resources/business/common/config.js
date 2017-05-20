@@ -17,10 +17,17 @@ lmsApp.config(["$routeProvider", function($routeProvider){
 		templateUrl: "adminBorrowerManage.html"
 	}).when("/viewborrowers", {
 		redirectTo: "/admin/borrowers"
-	})
-	.when("/admin/branches",{
+	}).when("/admin/branches",{
 		templateUrl: "adminBranchManage.html"
 	}).when("/viewbranches", {
 		redirectTo: "/admin/branches"
+	}).when("/admin/genres",{
+		templateUrl: "adminGenreManage.html"
+	}).when("/viewgenres", {
+		redirectTo: "/admin/genres"
+	}).when("/admin/publishers",{
+		templateUrl: "adminPublisherManage.html"
+	}).when("/viewpublishers", {
+		redirectTo: "/admin/publishers"
 	})
 }])
