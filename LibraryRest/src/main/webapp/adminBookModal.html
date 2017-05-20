@@ -4,7 +4,7 @@
 			aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		</button>
-		<h4 class="modal-title">Book Parameters</h4>
+		<h4 class="modal-title">Book Details</h4>
 	</div>
 	<div class="modal-body">
 		<p>Title of Book:</p>
@@ -12,7 +12,7 @@
 			required="required"> <br />
 		<!-- Put shite here -->
 		<p>Author(s):</p>
-		<p><select multiple class="form-control"  ng-mode="book.authors" ng-options="a.authorName for a in allAuthors">
+		<p><select multiple class="form-control"  ng-model="book.authors" ng-options="a.authorName for a in allAuthors">
 		</select></p>
 		<p>Genre(s):</p>
 		<select multiple class="form-control" ng-model="book.genres" ng-options="g.genreName for g in allGenres">

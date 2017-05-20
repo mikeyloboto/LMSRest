@@ -13,5 +13,14 @@ lmsApp.config(["$routeProvider", function($routeProvider){
 		templateUrl: "adminBookManage.html"
 	}).when("/viewbooks", {
 		redirectTo: "/admin/books"
+	}).when("/admin/borrowers",{
+		templateUrl: "adminBorrowerManage.html"
+	}).when("/viewborrowers", {
+		redirectTo: "/admin/borrowers"
+	})
+	.when("/admin/branches",{
+		templateUrl: "adminBranchManage.html"
+	}).when("/viewbranches", {
+		redirectTo: "/admin/branches"
 	})
 }])
