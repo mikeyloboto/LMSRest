@@ -20,7 +20,7 @@ lmsApp.controller("genreController", function($scope, $http, $window, $location,
 	}
 	
 	$scope.deleteGenre = function(genreId){
-		$http.delete("http://localhost:8080/library/genres/" + genreId, $scope.genre).success(function(){
+		$http.delete("http://localhost:8080/library/genres/" + genreId).success(function(){
 			genreService.getAllGenresService().then(function(backendGenresList){
 				$scope.genres = backendGenresList;
 				$scope.pagination = Pagination.getNew(10);

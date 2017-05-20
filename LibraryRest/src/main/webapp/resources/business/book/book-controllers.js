@@ -20,7 +20,7 @@ lmsApp.controller("bookController", function($scope, $http, $window, $location, 
 	}
 	
 	$scope.deleteBook = function(bookId){
-		$http.delete("http://localhost:8080/library/books/" + bookId, $scope.book).success(function(){
+		$http.delete("http://localhost:8080/library/books/" + bookId).success(function(){
 			bookService.getAllBooksService().then(function(backendBooksList){
 				$scope.books = backendBooksList;
 				$scope.pagination = Pagination.getNew(10);

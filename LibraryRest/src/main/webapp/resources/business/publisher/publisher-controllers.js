@@ -20,7 +20,7 @@ lmsApp.controller("publisherController", function($scope, $http, $window, $locat
 	}
 	
 	$scope.deletePublisher = function(publisherId){
-		$http.delete("http://localhost:8080/library/publishers/" + publisherId, $scope.publisher).success(function(){
+		$http.delete("http://localhost:8080/library/publishers/" + publisherId).success(function(){
 			publisherService.getAllPublishersService().then(function(backendPublishersList){
 				$scope.publishers = backendPublishersList;
 				$scope.pagination = Pagination.getNew(10);

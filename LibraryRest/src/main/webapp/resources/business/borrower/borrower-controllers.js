@@ -20,7 +20,7 @@ lmsApp.controller("borrowerController", function($scope, $http, $window, $locati
 	}
 	
 	$scope.deleteBorrower = function(borrowerId){
-		$http.delete("http://localhost:8080/library/borrowers/" + borrowerId, $scope.borrower).success(function(){
+		$http.delete("http://localhost:8080/library/borrowers/" + borrowerId).success(function(){
 			borrowerService.getAllBorrowersService().then(function(backendBorrowersList){
 				$scope.borrowers = backendBorrowersList;
 				$scope.pagination = Pagination.getNew(10);

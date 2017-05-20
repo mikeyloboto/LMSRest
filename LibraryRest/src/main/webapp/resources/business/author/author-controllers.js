@@ -20,7 +20,7 @@ lmsApp.controller("authorController", function($scope, $http, $window, $location
 	}
 	
 	$scope.deleteAuthor = function(authorId){
-		$http.delete("http://localhost:8080/library/authors/" + authorId, $scope.author).success(function(){
+		$http.delete("http://localhost:8080/library/authors/" + authorId).success(function(){
 			authorService.getAllAuthorsService().then(function(backendAuthorsList){
 				$scope.authors = backendAuthorsList;
 				$scope.pagination = Pagination.getNew(10);

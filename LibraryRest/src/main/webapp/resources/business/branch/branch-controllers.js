@@ -20,7 +20,7 @@ lmsApp.controller("branchController", function($scope, $http, $window, $location
 	}
 	
 	$scope.deleteBranch = function(branchId){
-		$http.delete("http://localhost:8080/library/branches/" + branchId, $scope.branch).success(function(){
+		$http.delete("http://localhost:8080/library/branches/" + branchId).success(function(){
 			branchService.getAllBranchesService().then(function(backendBranchesList){
 				$scope.branches = backendBranchesList;
 				$scope.pagination = Pagination.getNew(10);

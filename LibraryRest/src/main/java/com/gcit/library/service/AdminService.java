@@ -157,6 +157,15 @@ public class AdminService {
 		}
 		return null;
 	}
+	
+	@RequestMapping(value = "/loans", method = RequestMethod.DELETE, consumes = "application/json")
+	public void closeLoan(@RequestBody Loan loan) throws SQLException {
+		try {
+			ldao.closeLoan(loan);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@RequestMapping(value = "/authors/all", method = RequestMethod.GET, produces = "application/json")
 	public List<Author> getAllAuthors() throws SQLException {
@@ -261,7 +270,11 @@ public class AdminService {
 	@RequestMapping(value = "/loans/all", method = RequestMethod.GET, produces = "application/json")
 	public List<Loan> getAllLoans() throws SQLException {
 		try {
-			return ldao.readAllLoans(null);
+			List<Loan> ret = ldao.readAllLoans(null);
+			for (Loan l : ret) {
+				processBook(l.getBook());
+			}
+			return ret;
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -271,7 +284,11 @@ public class AdminService {
 	@RequestMapping(value = "/loans/all/{pageNo}", method = RequestMethod.GET, produces = "application/json")
 	public List<Loan> getAllLoansPaged(@PathVariable Integer pageNo) throws SQLException {
 		try {
-			return ldao.readAllLoans(pageNo);
+			List<Loan> ret = ldao.readAllLoans(pageNo);
+			for (Loan l : ret) {
+				processBook(l.getBook());
+			}
+			return ret;
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
