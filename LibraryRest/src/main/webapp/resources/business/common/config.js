@@ -5,6 +5,10 @@ lmsApp.config(["$routeProvider", function($routeProvider){
 		templateUrl: "home.html"
 	}).when("/admin",{
 		templateUrl: "admin.html"
+	}).when("/librarian",{
+		templateUrl: "librarian.html"
+	}).when("/borrower",{
+		templateUrl: "borrower.html"
 	}).when("/admin/authors",{
 		templateUrl: "adminAuthorManage.html"
 	}).when("/admin/books",{

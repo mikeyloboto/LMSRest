@@ -702,7 +702,7 @@ public class AdminService {
 
 	@Transactional
 	@RequestMapping(value = "/books", method = RequestMethod.PUT, consumes = "application/json")
-	public List<Author> putBook(@RequestBody Book book) throws SQLException {
+	public void putBook(@RequestBody Book book) throws SQLException {
 		try {
 			Book temp = bdao.readBookFromId(book.getBookId());
 			if (temp != null) {
@@ -734,11 +734,9 @@ public class AdminService {
 				}
 
 			}
-			return getAllAuthors();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
 	}
 
 	@Transactional

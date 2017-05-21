@@ -1,12 +1,19 @@
-lmsApp.controller("borrowerController", function($scope, $http, $window, $location, borrowerService, $filter, Pagination){
-	if($location.$$path === "/admin/borrowers"){
-		borrowerService.getAllBorrowersService().then(function(backendBorrowersList){
-			$scope.borrowers = backendBorrowersList;
-			$scope.pagination = Pagination.getNew(10);
-			$scope.pagination.numPages = Math.ceil($scope.borrowers.length / $scope.pagination.perPage);
+lmsApp.controller("clientController", function($scope, $http, $window, $location, clientService, $filter, Pagination){
+	if($location.$$path === "/borrower"){
+		clientService.getAllBranchesService().then(function(backendBranchesList){
+			$scope.allBranches = backendBranchesList;
 		});
 	}
 	
+	$scope.authAttempt = function(){
+		clientService.getBorrowerByPKService($scope.inputCard).then(function(data){
+			if (data != null) {
+				clientService.setClient(data);
+				clientService.setBranch($scope.branch);
+				$window.location.href = "#/borrower/controlpanel";
+			}
+		});
+	}
 	
 	$scope.saveBorrower = function(){
 		$http.put("http://localhost:8080/library/borrowers", $scope.borrower, "application/json").success(function(){
