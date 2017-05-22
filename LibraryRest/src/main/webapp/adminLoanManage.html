@@ -33,12 +33,11 @@
 					<td>{{l.borrower.name}}</td>
 					<td>{{l.book.description}}</td>
 					<td>{{l.branch.branchName}}</td>
-					<td>{{formatMonth(l.dateOut.month)}} {{l.dateOut.dayOfMonth}},
-						{{l.dateOut.year}}</td>
+					<td>{{l.dateOut.substring(0, 10)}}</td>
 					<td>{{l.dateDue}}</td>
 					<td><button type="button" class="btn btn-primary"
-							ng-click="showUpdateLoanModal(l)">Update</button></td>
-					<td><button type="button" class="btn btn-danger"
+							ng-click="showUpdateLoanModal(l)">Update</button>
+						<button type="button" class="btn btn-danger"
 							ng-click="closeLoan(l)">Delete</button></td>
 				</tr>
 			</tbody>

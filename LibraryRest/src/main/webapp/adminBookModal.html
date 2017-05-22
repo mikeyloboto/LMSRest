@@ -10,15 +10,19 @@
 		<p>Title of Book:</p>
 		<input class="form-control" type="text" ng-model="book.title"
 			required="required"> <br />
-		<!-- Put shite here -->
 		<p>Author(s):</p>
-		<p><select multiple class="form-control"  ng-model="book.authors" ng-options="a.authorName for a in allAuthors">
-		</select></p>
+		<p>
+			<select multiple class="form-control" ng-model="book.authors"
+				ng-options="a.authorName for a in allAuthors">
+			</select>
+		</p>
 		<p>Genre(s):</p>
-		<select multiple class="form-control" ng-model="book.genres" ng-options="g.genreName for g in allGenres">
+		<select multiple class="form-control" ng-model="book.genres"
+			ng-options="g.genreName for g in allGenres">
 		</select> <br />
 		<p>Publisher:</p>
-		<select class="form-control" ng-model="book.publisher" ng-options="p.publisherName for p in allPublishers">
+		<select class="form-control" ng-model="book.publisher"
+			ng-options="p.publisherName for p in allPublishers">
 
 		</select> <br />
 

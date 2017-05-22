@@ -9,6 +9,8 @@ lmsApp.config(["$routeProvider", function($routeProvider){
 		templateUrl: "librarian.html"
 	}).when("/borrower",{
 		templateUrl: "borrower.html"
+	}).when("/librarian",{
+		templateUrl: "librarian.html"
 	}).when("/admin/authors",{
 		templateUrl: "adminAuthorManage.html"
 	}).when("/admin/books",{
@@ -23,5 +25,7 @@ lmsApp.config(["$routeProvider", function($routeProvider){
 		templateUrl: "adminPublisherManage.html"
 	}).when("/admin/loans",{
 		templateUrl: "adminLoanManage.html"
+	}).when("/borrower/:bid/:brid/controlpanel",{
+		templateUrl: "borrowerMain.html"
 	})
 }])

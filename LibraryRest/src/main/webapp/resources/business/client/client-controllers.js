@@ -1,69 +1,144 @@
-lmsApp.controller("clientController", function($scope, $http, $window, $location, clientService, $filter, Pagination){
-	if($location.$$path === "/borrower"){
-		clientService.getAllBranchesService().then(function(backendBranchesList){
+lmsApp.controller("clientController", function($scope, $http, $window,
+		$location, clientService, $filter, Pagination, $routeParams) {
+
+	if ($location.$$path === "/borrower") {
+		clientService.getAllBranches().then(function(backendBranchesList) {
 			$scope.allBranches = backendBranchesList;
+			$scope.branchSelect = $scope.allBranches[0];
+			$scope.inputCard = 1;
 		});
+	} else {
+		clientService.getBorrowerByPKService($routeParams.bid).then(
+				function(data) {
+					clientService.setClient(data);
+					$scope.client = data;
+					loadLoans();
+				});
+		clientService.getBranchByPKService($routeParams.brid).then(
+				function(data) {
+					clientService.setBranch(data);
+					$scope.branch = data;
+					clientService.getAvailableBooks($scope.branch.branchNo)
+							.then(function(data) {
+								$scope.books = data;
+								$scope.chosenBook = {};// $scope.books[0];
+
+							});
+				});
+
 	}
-	
-	$scope.authAttempt = function(){
-		clientService.getBorrowerByPKService($scope.inputCard).then(function(data){
-			if (data != null) {
-				clientService.setClient(data);
-				clientService.setBranch($scope.branch);
-				$window.location.href = "#/borrower/controlpanel";
-			}
-		});
+
+	loadBooks = function() {
+		clientService.getAvailableBooks($scope.branch.branchNo).then(
+				function(data) {
+					var tbooks = Object.keys(data);
+					var bks = {};
+					for (var i = 0; i < tbooks.length; i++) {
+						bks[i] = getBook(tbooks[i]);
+					}
+					$scope.books = bks;
+				});
 	}
-	
-	$scope.saveBorrower = function(){
-		$http.put("http://localhost:8080/library/borrowers", $scope.borrower, "application/json").success(function(){
-			$scope.borrowerModal = false;
-			borrowerService.getAllBorrowersService().then(function(backendBorrowersList){
-				$scope.borrowers = backendBorrowersList;
-				$scope.pagination = Pagination.getNew(10);
-				$scope.pagination.numPages = Math.ceil($scope.borrowers.length / $scope.pagination.perPage);
-			});
-		});
+
+	getBook = function(bookId) {
+		$http.get("http://localhost:8080/library/books/" + bookId).then(
+				function(data) {
+					alert(data);
+					return data;
+				});
 	}
-	
-	$scope.deleteBorrower = function(borrowerId){
-		$http.delete("http://localhost:8080/library/borrowers/" + borrowerId).success(function(){
-			borrowerService.getAllBorrowersService().then(function(backendBorrowersList){
-				$scope.borrowers = backendBorrowersList;
-				$scope.pagination = Pagination.getNew(10);
-				$scope.pagination.numPages = Math.ceil($scope.borrowers.length / $scope.pagination.perPage);
-			});
-		});
+
+	loadLoans = function() {
+		clientService.getLoansByCardNo($scope.client.cardNo).then(
+				function(data) {
+					$scope.loans = data;
+					$scope.pagination = Pagination.getNew(10);
+					$scope.pagination.numPages = Math.ceil($scope.loans.length
+							/ $scope.pagination.perPage);
+				});
 	}
-	
-	$scope.sort = function(){
-		$scope.borrowers = $filter('orderBy')($scope.borrowers, 'borrowerName');
+
+	$scope.authAttempt = function() {
+		clientService.getBorrowerByPKService($scope.inputCard).then(
+				function(data) {
+					if (data != null && $scope.branchSelect != null) {
+						$window.location.href = "#/borrower/" + data.cardNo
+								+ "/" + $scope.branchSelect.branchNo
+								+ "/controlpanel";
+					}
+				});
 	}
-	
-	$scope.showEditBorrowerModal = function(borrowerId){
-		borrowerService.getBorrowerByPKService(borrowerId).then(function(data){
-			$scope.borrower = data;
-			$scope.borrowerModal = true;
-		});
+
+	$scope.getBorrowerName = function() {
+		return clientService.getClient().name;
 	}
-	
-	$scope.showAddBorrowerModal = function(){
-		borrowerService.getBorrowerInit().then(function(data){
-			$scope.borrower = data;
-			$scope.borrowerModal = true;
-		});
-	}
-	
-	$scope.closeModal = function(){
+
+	$scope.closeModal = function() {
 		$scope.borrowerModal = false;
 	}
-	
-	$scope.searchBorrowers = function(){
-		var req = ($scope.searchString == "") ? "http://localhost:8080/library/borrowers/all" : "http://localhost:8080/library/borrowers/search/"+$scope.searchString ;
-		$http.get(req).success(function(data){
-			$scope.borrowers = data;
-			$scope.pagination = Pagination.getNew(10);
-			$scope.pagination.numPages = Math.ceil($scope.borrowers.length / $scope.pagination.perPage);
+
+	$scope.formatDate = function(date) {
+		return date.substring(0, 10);
+	}
+
+	$scope.borrow = function() {
+
+		$http.post("http://localhost:8080/library/loans/start", $scope.newLoan)
+				.success(
+						function() {
+							loadLoans();
+							clientService.getAvailableBooks(
+									$scope.branch.branchNo).then(
+									function(data) {
+										$scope.books = data;
+										$scope.chosenBook = {};// $scope.books[0];
+
+									});
+						});
+		$scope.borrowModal = false;
+	}
+
+	$scope.closeLoan = function(loan) {
+		$http.post(
+				"http://localhost:8080/library/loans/close/"
+						+ $scope.branch.branchNo, loan).success(
+				function() {
+					loadLoans();
+					clientService.getAvailableBooks($scope.branch.branchNo)
+							.then(function(data) {
+								$scope.books = data;
+								$scope.chosenBook = {};// $scope.books[0];
+
+							});
+
+				});
+	}
+
+	$scope.getClass = function(loan) {
+		var due = new Date(loan.dateDue);
+		var today = new Date();
+		if (due < today) {
+			return "btn btn-danger";
+		} else {
+			if (loan.branch.branchNo === $scope.branch.branchNo) {
+				return "btn btn-success";
+			} else {
+				return "btn btn-warning";
+			}
+		}
+	}
+
+	$scope.borrowBookModal = function() {
+		clientService.getLoanInit().then(function(data) {
+			$scope.newLoan = data;
+			$scope.newLoan.borrower = $scope.client;
+			$scope.newLoan.branch = $scope.branch;
+			$scope.borrowModal = true;
 		});
+
+	}
+
+	$scope.closeModal = function() {
+		$scope.borrowModal = false;
 	}
 })

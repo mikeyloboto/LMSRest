@@ -49,10 +49,10 @@ public class LibrarianService {
 	@Autowired
 	PublisherDAO pdao;
 
-	@RequestMapping(value = "/getAllBooksInBranchTestTest/{pageNo}", method = RequestMethod.POST, consumes="application/json", produces="application/json")
+	@RequestMapping(value = "/books/branch/testtest/{pageNo}", method = RequestMethod.POST, consumes="application/json", produces="application/json")
 	public Map<Book, Integer> getAllBooksInBranch(@RequestBody Branch branch, @PathVariable Integer pageNo) throws SQLException {
 		try {
-			return cdao.readCopiesFirstLevel(branch, pageNo);
+			return cdao.readCopiesFirstLevel(null, pageNo);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -83,21 +83,13 @@ public class LibrarianService {
 		return null;
 	}
 
-	@Transactional
-	@RequestMapping(value = "/incrementBookCopiesInBranch", method = RequestMethod.POST, consumes="application/json")
-	public void incrementBookCopiesInBranch(Branch br, Book book, Integer increment) throws SQLException {
-		try {
-			cdao.incrementCopies(br, book, increment);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
 
 	@Transactional
-	@RequestMapping(value = "/updateBookCopiesInBranch", method = RequestMethod.POST, consumes="application/json")
-	public void updateBookCopiesInBranch(Branch br, Book book, Integer copies) throws SQLException {
+	@RequestMapping(value = "/books/branch/{branchNo}/{bookId}", method = RequestMethod.POST, consumes = "application/json")
+	public void updateBookCopiesInBranch(@PathVariable Integer branchNo, @PathVariable Integer bookId,
+			@RequestBody Integer copies) throws SQLException {
 		try {
-			cdao.modCopies(br, book, copies);
+			cdao.modCopies(branchNo, bookId, copies);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}

@@ -23,13 +23,15 @@ public class Loan implements Serializable{
 	private static final long serialVersionUID = 3824650046813434411L;
 	
 	private Borrower borrower;
-	@JsonDeserialize(using = BookDeserializer.class)
+//	@JsonDeserialize(using = BookDeserializer.class)
 	private Book book;
 	private Branch branch;
 	@JsonDeserialize(using = LocalDateDeserializer.class)  
 	@JsonSerialize(using = LocalDateSerializer.class) 
 	private LocalDate dateDue;
 	private LocalDate dateIn;
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)  
+	@JsonSerialize(using = LocalDateTimeSerializer.class) 
 	private LocalDateTime dateOut;
 	/**
 	 * @return the borrower
@@ -191,5 +193,34 @@ class LocalDateSerializer extends StdSerializer<LocalDate> {
     @Override
     public void serialize(LocalDate value, JsonGenerator gen, SerializerProvider sp) throws IOException, JsonProcessingException {
         gen.writeString(value.format(DateTimeFormatter.ISO_LOCAL_DATE));
+    }
+}
+
+class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
+
+    private static final long serialVersionUID = 1L;
+
+    protected LocalDateTimeDeserializer() {
+        super(LocalDateTime.class);
+    }
+
+    @Override
+    public LocalDateTime deserialize(JsonParser jp, DeserializationContext ctxt)
+            throws IOException, JsonProcessingException {
+        return LocalDateTime.parse(jp.readValueAs(String.class));
+    }
+}
+
+class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
+
+    private static final long serialVersionUID = 1L;
+
+    public LocalDateTimeSerializer(){
+        super(LocalDateTime.class);
+    }
+
+    @Override
+    public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider sp) throws IOException, JsonProcessingException {
+        gen.writeString(value.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     }
 }

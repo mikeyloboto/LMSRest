@@ -55,17 +55,17 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>> {
 		template.update("delete from tbl_book where bookId = ?", new Object[] { bookId });
 	}
 
-	public Integer getBookCopies(Book book, Branch branch) throws ClassNotFoundException, SQLException {
+	public Integer getBookCopies(Book book, Integer branchNo) throws ClassNotFoundException, SQLException {
 		return template.queryForObject("select noOfCopies from tbl_book_copies where bookId = ? and branchId = ?",
-				new Object[] { book.getBookId(), branch.getBranchNo() }, Integer.class);
+				new Object[] { book.getBookId(), branchNo }, Integer.class);
 	}
 
-	public List<Book> readBookListInBranch(Branch branch, Integer pageNo) {
+	public List<Book> readBookListInBranch(Integer branchNo, Integer pageNo) {
 		setPageNo(pageNo);
 
 		return template.query(
 				"select * from tbl_book where bookId in (select bookId from tbl_book_copies where branchId = ?  and noOfCopies > 0)",
-				new Object[] { branch.getBranchNo() }, this);
+				new Object[] { branchNo }, this);
 	}
 
 	@Override

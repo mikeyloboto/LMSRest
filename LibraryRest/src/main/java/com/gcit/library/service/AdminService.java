@@ -158,7 +158,9 @@ public class AdminService {
 		return null;
 	}
 	
-	@RequestMapping(value = "/loans", method = RequestMethod.DELETE, consumes = "application/json")
+
+	@Transactional
+	@RequestMapping(value = "/loans/close", method = RequestMethod.POST, consumes = "application/json")
 	public void closeLoan(@RequestBody Loan loan) throws SQLException {
 		try {
 			ldao.closeLoan(loan);

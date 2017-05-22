@@ -18,15 +18,13 @@
 				<div class="panel-body">
 					<p>Enter your card number:</p>
 					<p>
-						<input class="form-control" type="number" ng-model="inputCard"
-							required="required">
+						<input class="form-control" type="number" ng-model="inputCard">
 					</p>
 					<p>Select your branch</p>
 					<p>
 						<select class="form-control" ng-model="branchSelect"
-							ng-options="b.branchName for b in allBranches"></select>
+							ng-options="b.branchName for b in allBranches" ng-init="branchInit"></select>
 					</p>
-
 					<p>
 						<button type="button" class="btn btn-success"
 							ng-click="authAttempt()">Sign In</button>

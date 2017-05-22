@@ -14,13 +14,13 @@ public class CopiesDAO extends BaseDAO {
 	@Autowired
 	BookDAO bdao;
 
-	public Map<Book, Integer> readCopiesFirstLevel(Branch branch, Integer pageNo)
+	public Map<Book, Integer> readCopiesFirstLevel(Integer branchNo, Integer pageNo)
 			throws SQLException, ClassNotFoundException {
 		setPageNo(pageNo);
 		Map<Book, Integer> map = new HashMap<>();
-		List<Book> books = bdao.readBookListInBranch(branch, null);
+		List<Book> books = bdao.readBookListInBranch(branchNo, null);
 		for (Book b : books) {
-			Integer c = bdao.getBookCopies(b, branch);
+			Integer c = bdao.getBookCopies(b, branchNo);
 			map.put(b, c);
 		}
 		return map;
@@ -31,38 +31,38 @@ public class CopiesDAO extends BaseDAO {
 		return null;
 	}
 
-	public Boolean modCopies(Branch branch, Book book, Integer copies) throws ClassNotFoundException, SQLException {
+	public Boolean modCopies(Integer branchNo, Integer bookId, Integer copies) throws ClassNotFoundException, SQLException {
 		Integer bookExistence = template.queryForObject(
 				"select count(*) from tbl_book_copies where branchId = ? and bookId = ?",
-				new Object[] { branch.getBranchNo(), book.getBookId() }, Integer.class);
+				new Object[] { branchNo, bookId }, Integer.class);
 		if (bookExistence == 0) {
 			// add fresh
 			template.update("insert into tbl_book_copies (branchId, bookId, noOfCopies) values (?, ?, ?)",
-					new Object[] { branch.getBranchNo(), book.getBookId(), copies });
+					new Object[] { branchNo, bookId, copies });
 		} else {
 			// update
 			template.update("update tbl_book_copies set noOfCopies = ? where branchId = ? and bookId = ?",
-					new Object[] { copies, branch.getBranchNo(), book.getBookId() });
+					new Object[] { copies, branchNo, bookId });
 		}
 		return Boolean.TRUE;
 	}
 
-	public Boolean incrementCopies(Branch branch, Book book, Integer increment)
+	public Boolean incrementCopies(Integer branch, Integer book, Integer increment)
 			throws ClassNotFoundException, SQLException {
 		Integer bookExistence = template.queryForObject(
 				"select count(*) from tbl_book_copies where branchId = ? and bookId = ?",
-				new Object[] { branch.getBranchNo(), book.getBookId() }, Integer.class);
+				new Object[] { branch, book }, Integer.class);
 		if (bookExistence == 0) {
 			// add fresh
 			template.update("insert into tbl_book_copies (branchId, bookId, noOfCopies) values (?, ?, ?)",
-					new Object[] { branch.getBranchNo(), book.getBookId(), increment });
+					new Object[] { branch, book, increment });
 		} else {
 			Integer copies = template.queryForObject(
 					"select noOfCopies from tbl_book_copies where branchId = ? and bookId = ?",
-					new Object[] { branch.getBranchNo(), book.getBookId() }, Integer.class) + increment;
+					new Object[] { branch, book }, Integer.class) + increment;
 			// update
 			template.update("update tbl_book_copies set noOfCopies = ? where branchId = ? and bookId = ?",
-					new Object[] { copies, branch.getBranchNo(), book.getBookId() });
+					new Object[] { copies, branch, book });
 		}
 		return Boolean.TRUE;
 	}

@@ -1,8 +1,14 @@
 package com.gcit.library.entity;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.KeyDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 public class Branch implements Serializable{
 	
@@ -12,6 +18,7 @@ public class Branch implements Serializable{
 	private String branchName;
 	private String branchAddress;
 	private List<Loan> loans;
+	@JsonDeserialize(keyUsing=BookDeserializer.class)
 	private Map<Book, Integer> stock;
 	/**
 	 * @return the branchNo
@@ -127,5 +134,16 @@ public class Branch implements Serializable{
 		return true;
 	}
 	
+	
+}
+
+class BookDeserializer extends KeyDeserializer{
+
+	@Override
+	public Book deserializeKey(String arg0, DeserializationContext arg1) throws IOException, JsonProcessingException {
+		Book book = new Book();
+		book.setBookId(Integer.parseInt(arg0));
+		return null;
+	}
 	
 }

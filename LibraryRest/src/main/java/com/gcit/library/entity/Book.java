@@ -5,6 +5,14 @@ import java.util.List;
 
 public class Book implements Serializable{
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return bookId.toString();
+	}
+
 	private static final long serialVersionUID = -1070838265691816263L;
 
 	private Integer bookId;
