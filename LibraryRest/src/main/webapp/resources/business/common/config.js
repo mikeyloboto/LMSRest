@@ -27,5 +27,9 @@ lmsApp.config(["$routeProvider", function($routeProvider){
 		templateUrl: "adminLoanManage.html"
 	}).when("/borrower/:bid/:brid/controlpanel",{
 		templateUrl: "borrowerMain.html"
+	}).when("/librarian/:brid/controlpanel",{
+		templateUrl: "librarianMain.html"
+	}).when("/librarian/:brid/stock",{
+		templateUrl: "librarianStockManage.html"
 	})
 }])

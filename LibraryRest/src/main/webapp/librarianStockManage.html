@@ -1,0 +1,63 @@
+<div ng-controller="librarianStockController">
+	<ol class="breadcrumb">
+		<li><a href="#/home">Home</a></li>
+		<li><a href="#/librarian">Librarian Login</a></li>
+		<li><a href="#/librarian/{{branch.branchNo}}/controlpanel">{{branch.branchName}}
+				Management</a></li>
+		<li class="active">{{branch.branchName}} Stock</li>
+	</ol>
+	<div class="container">
+		<div>
+			<button type="button" class="btn btn-success"
+				ng-click="addMookModalShow()">Add New Book to Branch</button>
+			<div class="page-header">
+				<h1>List of Book in {{branch.branchName}}</h1>
+			</div>
+			<nav aria-label="Page navigation">
+				<ul class="pagination">
+					<li><a href="" ng-click="pagination.prevPage()">&laquo;</a></li>
+					<li ng-repeat="n in [] | range: pagination.numPages"
+						ng-class="{active: n == pagination.page}"><a href=""
+						ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+					<li><a href="" ng-click="pagination.nextPage()">&raquo;</a></li>
+				</ul>
+			</nav>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Book</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						ng-repeat="b in books | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+
+						<td>{{$index+1+(pagination.page*pagination.perPage)}}</td>
+						<td>{{b.description}}</td>
+						<td><button type="button" class="btn btn-primary"
+								ng-click="showManageModal(b)">Add / Remove
+								Copies</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="modal fade bs-example-modal-lg" id="stockModal"
+			modal="stockModal" tabindex="-1" role="dialog"
+			aria-labelledby="myLargeModalLabel">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div ng-include="'librarianStockEdit.html'"></div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade bs-example-modal-lg" id="addStockModal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">....</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -5,7 +5,6 @@ lmsApp.controller("clientController", function($scope, $http, $window,
 		clientService.getAllBranches().then(function(backendBranchesList) {
 			$scope.allBranches = backendBranchesList;
 			$scope.branchSelect = $scope.allBranches[0];
-			$scope.inputCard = 1;
 		});
 	} else {
 		clientService.getBorrowerByPKService($routeParams.bid).then(

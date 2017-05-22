@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gcit.library.dao.AuthorDAO;
@@ -93,5 +94,28 @@ public class LibrarianService {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/books/branch/{branchNo}/{bookId}/increment", method = RequestMethod.POST, consumes = "application/json")
+	public void incrementBookCopiesInBranch(@PathVariable Integer branchNo, @PathVariable Integer bookId,
+			@RequestBody Integer copies) throws SQLException {
+		try {
+			cdao.incrementCopies(branchNo, bookId, copies);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value = "/books/branch/{branchNo}/{bookId}", method = RequestMethod.GET, produces = "application/json")
+	public Integer getBookCopiesInBranch(@PathVariable Integer branchNo, @PathVariable Integer bookId) throws SQLException {
+		try {
+			Book key = new Book();
+			key.setBookId(bookId);
+			return bdao.getBookCopies(key, branchNo);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
