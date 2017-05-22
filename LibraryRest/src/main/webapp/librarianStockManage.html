@@ -9,7 +9,7 @@
 	<div class="container">
 		<div>
 			<button type="button" class="btn btn-success"
-				ng-click="addMookModalShow()">Add New Book to Branch</button>
+				ng-click="addBookModalShow()">Add New Book to Branch</button>
 			<div class="page-header">
 				<h1>List of Book in {{branch.branchName}}</h1>
 			</div>
@@ -37,8 +37,7 @@
 						<td>{{$index+1+(pagination.page*pagination.perPage)}}</td>
 						<td>{{b.description}}</td>
 						<td><button type="button" class="btn btn-primary"
-								ng-click="showManageModal(b)">Add / Remove
-								Copies</button></td>
+								ng-click="showManageModal(b)">Add / Remove Copies</button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -54,9 +53,12 @@
 			</div>
 		</div>
 		<div class="modal fade bs-example-modal-lg" id="addStockModal"
-			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+			modal="addStockModal" tabindex="-1" role="dialog"
+			aria-labelledby="myLargeModalLabel">
 			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">....</div>
+				<div class="modal-content">
+					<div ng-include="'librarianBookAdd.html'"></div>
+				</div>
 			</div>
 		</div>
 	</div>

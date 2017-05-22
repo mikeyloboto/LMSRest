@@ -39,7 +39,7 @@ lmsApp
 		.controller(
 				"librarianStockController",
 				function($scope, $http, $window, $location, librarianService,
-						$filter, Pagination, $routeParams) {
+						bookService, $filter, Pagination, $routeParams) {
 
 					if ($location.$$path != "/librarian") {
 						librarianService
@@ -62,8 +62,22 @@ lmsApp
 																		.ceil($scope.books.length
 																				/ $scope.pagination.perPage);
 																$scope.copies = {};
+																$scope.copies.copies = 0;
+															})
+													.then(
+															function() {
+																bookService
+																		.getAllBooksService()
+																		.then(
+																				function(
+																						backendBooksList) {
+																					$scope.allBooks = backendBooksList;
+																					$scope.copies.book = $scope.allBooks[0];
+																				});
+
 															});
-										})
+										});
+
 					}
 
 					getCopies = function(book) {
@@ -96,6 +110,11 @@ lmsApp
 						})
 					}
 
+					$scope.addBookModalShow = function() {
+						$scope.copies.copies = 0;
+						$scope.addStockModal = true;
+					}
+
 					$scope.closeModal = function() {
 						$scope.stockModal = false;
 						$scope.addStockModal = false;
@@ -124,5 +143,32 @@ lmsApp
 															});
 										});
 						$scope.stockModal = false;
+					}
+
+					$scope.addBooks = function() {
+						$http
+								.post(
+										"http://localhost:8080/library/books/branch/"
+												+ $scope.branch.branchNo + "/"
+												+ $scope.copies.book.bookId
+												+ "/increment",
+										$scope.copies.copies)
+								.success(
+										function() {
+											librarianService
+													.getAvailableBooks(
+															$scope.branch.branchNo)
+													.then(
+															function(data) {
+																$scope.books = data;
+																$scope.pagination = Pagination
+																		.getNew(10);
+																$scope.pagination.numPages = Math
+																		.ceil($scope.books.length
+																				/ $scope.pagination.perPage);
+
+															});
+										});
+						$scope.addStockModal = false;
 					}
 				})
