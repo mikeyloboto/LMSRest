@@ -30,7 +30,7 @@ public class LMSConfig {
 
 	private static String usrName = "javaUser";
 	private static String password = "javaPass";
-	private static String url = "jdbc:mysql://localhost/library";
+	private static String url = "jdbc:mysql://library.cbblbn15wdui.us-east-1.rds.amazonaws.com/library";
 	private static String driver = "com.mysql.jdbc.Driver";
 
 	@Bean

@@ -1,0 +1,36 @@
+<ol class="breadcrumb">
+	<li><a href="#/home">Home</a></li>
+	<li class="active">Borrower Login</li>
+</ol>
+<div class="jumbotron">
+	<div class="container">
+		<h1>LMS Borrower</h1>
+		<p>Welcome to Our Library.</p>
+	</div>
+</div>
+<div class="container" ng-controller="clientController">
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">Sign In to The System:</h3>
+				</div>
+				<div class="panel-body">
+					<p>Enter your card number:</p>
+					<p>
+						<input class="form-control" type="number" ng-model="inputCard">
+					</p>
+					<p>Select your branch</p>
+					<p>
+						<select class="form-control" ng-model="branchSelect"
+							ng-options="b.branchName for b in allBranches" ng-init="branchInit"></select>
+					</p>
+					<p>
+						<button type="button" class="btn btn-success"
+							ng-click="authAttempt()">Sign In</button>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

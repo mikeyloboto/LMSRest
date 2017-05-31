@@ -1,0 +1,36 @@
+<div>
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<h4 class="modal-title">Book Details</h4>
+	</div>
+	<div class="modal-body">
+		<p>Title of Book:</p>
+		<input class="form-control" type="text" ng-model="book.title"
+			required="required"> <br />
+		<p>Author(s):</p>
+		<p>
+			<select multiple class="form-control" ng-model="book.authors"
+				ng-options="a.authorName for a in allAuthors">
+			</select>
+		</p>
+		<p>Genre(s):</p>
+		<select multiple class="form-control" ng-model="book.genres"
+			ng-options="g.genreName for g in allGenres">
+		</select> <br />
+		<p>Publisher:</p>
+		<select class="form-control" ng-model="book.publisher"
+			ng-options="p.publisherName for p in allPublishers">
+
+		</select> <br />
+
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal"
+			ng-click="closeModal()">Close</button>
+		<button type="button" class="btn btn-primary" ng-click="saveBook()">Save</button>
+	</div>
+</div>
