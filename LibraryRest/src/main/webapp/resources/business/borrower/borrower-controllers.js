@@ -1,4 +1,4 @@
-lmsApp.controller("borrowerController", function($scope, $http, $window, $location, borrowerService, $filter, Pagination){
+lmsApp.controller("borrowerController", function($scope, $http, $window, $location, borrowerService, $filter, Pagination, globalConstants){
 	if($location.$$path === "/admin/borrowers"){
 		borrowerService.getAllBorrowersService().then(function(backendBorrowersList){
 			$scope.borrowers = backendBorrowersList;
@@ -9,7 +9,7 @@ lmsApp.controller("borrowerController", function($scope, $http, $window, $locati
 	
 	
 	$scope.saveBorrower = function(){
-		$http.put("http://localhost:8080/library/borrowers", $scope.borrower, "application/json").success(function(){
+		$http.put(globalConstants.HOST+"/library/borrowers", $scope.borrower, "application/json").success(function(){
 			$scope.borrowerModal = false;
 			borrowerService.getAllBorrowersService().then(function(backendBorrowersList){
 				$scope.borrowers = backendBorrowersList;
@@ -20,7 +20,7 @@ lmsApp.controller("borrowerController", function($scope, $http, $window, $locati
 	}
 	
 	$scope.deleteBorrower = function(borrowerId){
-		$http.delete("http://localhost:8080/library/borrowers/" + borrowerId).success(function(){
+		$http.delete(globalConstants.HOST+"/library/borrowers/" + borrowerId).success(function(){
 			borrowerService.getAllBorrowersService().then(function(backendBorrowersList){
 				$scope.borrowers = backendBorrowersList;
 				$scope.pagination = Pagination.getNew(10);
@@ -52,7 +52,7 @@ lmsApp.controller("borrowerController", function($scope, $http, $window, $locati
 	}
 	
 	$scope.searchBorrowers = function(){
-		var req = ($scope.searchString == "") ? "http://localhost:8080/library/borrowers/all" : "http://localhost:8080/library/borrowers/search/"+$scope.searchString ;
+		var req = ($scope.searchString == "") ? globalConstants.HOST+"/library/borrowers/all" : globalConstants.HOST+"/library/borrowers/search/"+$scope.searchString ;
 		$http.get(req).success(function(data){
 			$scope.borrowers = data;
 			$scope.pagination = Pagination.getNew(10);

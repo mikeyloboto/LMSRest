@@ -1,5 +1,5 @@
 lmsApp.controller("loanController", function($scope, $http, $window, $location,
-		loanService, $filter, Pagination) {
+		loanService, $filter, Pagination, globalConstants) {
 	if ($location.$$path === "/admin/loans") {
 		loanService.getAllLoansService().then(
 				function(backendLoansList) {
@@ -11,7 +11,7 @@ lmsApp.controller("loanController", function($scope, $http, $window, $location,
 	}
 
 	$scope.saveLoan = function() {
-		$http.put("http://localhost:8080/library/loans", $scope.loan).success(
+		$http.put(globalConstants.HOST+"/library/loans", $scope.loan).success(
 				function() {
 					$scope.loanModal = false;
 					loanService.getAllLoansService().then(
@@ -26,7 +26,7 @@ lmsApp.controller("loanController", function($scope, $http, $window, $location,
 	}
 
 	$scope.closeLoan = function(loan) {
-		$http.post("http://localhost:8080/library/loans/close/", loan).success(
+		$http.post(globalConstants.HOST+"/library/loans/close/", loan).success(
 				function() {
 					loanService.getAllLoansService().then(
 							function(backendLoansList) {

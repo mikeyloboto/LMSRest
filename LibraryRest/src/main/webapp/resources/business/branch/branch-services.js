@@ -1,9 +1,9 @@
-lmsApp.factory("branchService", function($http, branchConstants){
+lmsApp.factory("branchService", function($http, globalConstants){
 	return{
 		getAllBranchesService: function(){
 			var getBranchData = {};
 			return $http({
-				url: branchConstants.GET_ALL_BRANCHS_URL
+				url: globalConstants.HOST+"/library/branches/all"
 			}).success(function(data){
 				getBranchData = data;
 			}).then(function(){
@@ -14,7 +14,7 @@ lmsApp.factory("branchService", function($http, branchConstants){
 		getBranchByPKService: function(branchId){
 			var getBranchByPkData = {};
 			return $http({
-				url: branchConstants.GET_BRANCH_BY_PK_URL+branchId
+				url: globalConstants.HOST+"/library/branches/"+branchId
 			}).success(function(data){
 				getBranchByPkData = data;
 			}).then(function(){
@@ -25,7 +25,7 @@ lmsApp.factory("branchService", function($http, branchConstants){
 		getBranchInit: function(){
 			var branchInit = {};
 			return $http({
-				url: branchConstants.INIT_BRANCH_URL
+				url: globalConstants.HOST+"/library/branches/init"
 			}).success(function(data){
 				branchInit = data;
 			}).then(function(){

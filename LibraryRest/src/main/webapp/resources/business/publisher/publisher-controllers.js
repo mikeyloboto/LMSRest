@@ -9,7 +9,7 @@ lmsApp.controller("publisherController", function($scope, $http, $window, $locat
 	
 	
 	$scope.savePublisher = function(){
-		$http.put("http://localhost:8080/library/publishers", $scope.publisher).success(function(){
+		$http.put(globalConstants.HOST+"/library/publishers", $scope.publisher).success(function(){
 			$scope.publisherModal = false;
 			publisherService.getAllPublishersService().then(function(backendPublishersList){
 				$scope.publishers = backendPublishersList;
@@ -20,7 +20,7 @@ lmsApp.controller("publisherController", function($scope, $http, $window, $locat
 	}
 	
 	$scope.deletePublisher = function(publisherId){
-		$http.delete("http://localhost:8080/library/publishers/" + publisherId).success(function(){
+		$http.delete(globalConstants.HOST+"/library/publishers/" + publisherId).success(function(){
 			publisherService.getAllPublishersService().then(function(backendPublishersList){
 				$scope.publishers = backendPublishersList;
 				$scope.pagination = Pagination.getNew(10);
@@ -52,7 +52,7 @@ lmsApp.controller("publisherController", function($scope, $http, $window, $locat
 	}
 	
 	$scope.searchPublishers = function(){
-		var req = ($scope.searchString == "") ? "http://localhost:8080/library/publishers/all" : "http://localhost:8080/library/publishers/search/"+$scope.searchString ;
+		var req = ($scope.searchString == "") ? globalConstants.HOST+"/library/publishers/all" : globalConstants.HOST+"/library/publishers/search/"+$scope.searchString ;
 		$http.get(req).success(function(data){
 			$scope.publishers = data;
 			$scope.pagination = Pagination.getNew(10);

@@ -1,9 +1,9 @@
-lmsApp.factory("publisherService", function($http, publisherConstants){
+lmsApp.factory("publisherService", function($http, globalConstants){
 	return{
 		getAllPublishersService: function(){
 			var getPublisherData = {};
 			return $http({
-				url: publisherConstants.GET_ALL_PUBLISHERS_URL
+				url: globalConstants.HOST+"/library/publishers/all"
 			}).success(function(data){
 				getPublisherData = data;
 			}).then(function(){
@@ -14,7 +14,7 @@ lmsApp.factory("publisherService", function($http, publisherConstants){
 		getPublisherByPKService: function(publisherId){
 			var getPublisherByPkData = {};
 			return $http({
-				url: publisherConstants.GET_PUBLISHER_BY_PK_URL+publisherId
+				url: globalConstants.HOST+"/library/publishers/"+publisherId
 			}).success(function(data){
 				getPublisherByPkData = data;
 			}).then(function(){
@@ -25,7 +25,7 @@ lmsApp.factory("publisherService", function($http, publisherConstants){
 		getPublisherInit: function(){
 			var publisherInit = {};
 			return $http({
-				url: publisherConstants.INIT_PUBLISHER_URL
+				url: globalConstants.HOST+"/library/publishers/init"
 			}).success(function(data){
 				publisherInit = data;
 			}).then(function(){

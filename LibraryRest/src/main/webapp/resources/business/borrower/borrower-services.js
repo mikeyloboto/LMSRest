@@ -1,9 +1,9 @@
-lmsApp.factory("borrowerService", function($http, borrowerConstants){
+lmsApp.factory("borrowerService", function($http, globalConstants){
 	return{
 		getAllBorrowersService: function(){
 			var getBorrowerData = {};
 			return $http({
-				url: borrowerConstants.GET_ALL_BORROWERS_URL
+				url: globalConstants.HOST+"/library/borrowers/all"
 			}).success(function(data){
 				getBorrowerData = data;
 			}).then(function(){
@@ -14,7 +14,7 @@ lmsApp.factory("borrowerService", function($http, borrowerConstants){
 		getBorrowerByPKService: function(borrowerId){
 			var getBorrowerByPkData = {};
 			return $http({
-				url: borrowerConstants.GET_BORROWER_BY_PK_URL+borrowerId
+				url: globalConstants.HOST+"/library/borrowers/"+borrowerId
 			}).success(function(data){
 				getBorrowerByPkData = data;
 			}).then(function(){
@@ -25,7 +25,7 @@ lmsApp.factory("borrowerService", function($http, borrowerConstants){
 		getBorrowerInit: function(){
 			var borrowerInit = {};
 			return $http({
-				url: borrowerConstants.INIT_BORROWER_URL
+				url: globalConstants.HOST+"/library/borrowers/init"
 			}).success(function(data){
 				borrowerInit = data;
 			}).then(function(){

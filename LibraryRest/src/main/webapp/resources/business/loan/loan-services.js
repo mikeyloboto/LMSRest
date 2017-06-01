@@ -1,9 +1,9 @@
-lmsApp.factory("loanService", function($http, loanConstants){
+lmsApp.factory("loanService", function($http, globalConstants){
 	return{
 		getAllLoansService: function(){
 			var getLoanData = {};
 			return $http({
-				url: loanConstants.GET_ALL_LOANS_URL
+				url: globalConstants.HOST+"/library/loans/all"
 			}).success(function(data){
 				getLoanData = data;
 			}).then(function(){

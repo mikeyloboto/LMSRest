@@ -1,5 +1,5 @@
 lmsApp.controller("clientController", function($scope, $http, $window,
-		$location, clientService, $filter, Pagination, $routeParams) {
+		$location, clientService, $filter, Pagination, $routeParams, globalConstants) {
 
 	if ($location.$$path === "/borrower") {
 		clientService.getAllBranches().then(function(backendBranchesList) {
@@ -40,7 +40,7 @@ lmsApp.controller("clientController", function($scope, $http, $window,
 	}
 
 	getBook = function(bookId) {
-		$http.get("http://localhost:8080/library/books/" + bookId).then(
+		$http.get(globalConstants.HOST+"/library/books/" + bookId).then(
 				function(data) {
 					alert(data);
 					return data;
@@ -82,7 +82,7 @@ lmsApp.controller("clientController", function($scope, $http, $window,
 
 	$scope.borrow = function() {
 
-		$http.post("http://localhost:8080/library/loans/start", $scope.newLoan)
+		$http.post(globalConstants.HOST+"/library/loans/start", $scope.newLoan)
 				.success(
 						function() {
 							loadLoans();
@@ -99,7 +99,7 @@ lmsApp.controller("clientController", function($scope, $http, $window,
 
 	$scope.closeLoan = function(loan) {
 		$http.post(
-				"http://localhost:8080/library/loans/close/"
+				globalConstants.HOST+"/library/loans/close/"
 						+ $scope.branch.branchNo, loan).success(
 				function() {
 					loadLoans();

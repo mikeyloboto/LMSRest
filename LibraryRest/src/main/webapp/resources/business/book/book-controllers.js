@@ -1,4 +1,4 @@
-lmsApp.controller("bookController", function($scope, $http, $window, $location, bookService, $filter, Pagination){
+lmsApp.controller("bookController", function($scope, $http, $window, $location, bookService, $filter, Pagination, globalConstants){
 	if($location.$$path === "/admin/books"){
 		bookService.getAllBooksService().then(function(backendBooksList){
 			$scope.books = backendBooksList;
@@ -9,7 +9,7 @@ lmsApp.controller("bookController", function($scope, $http, $window, $location, 
 	
 	
 	$scope.saveBook = function(){
-		$http.put("http://localhost:8080/library/books", $scope.book).success(function(){
+		$http.put(globalConstants.HOST+"/library/books", $scope.book).success(function(){
 			$scope.bookModal = false;
 			bookService.getAllBooksService().then(function(backendBooksList){
 				$scope.books = backendBooksList;
@@ -20,7 +20,7 @@ lmsApp.controller("bookController", function($scope, $http, $window, $location, 
 	}
 	
 	$scope.deleteBook = function(bookId){
-		$http.delete("http://localhost:8080/library/books/" + bookId).success(function(){
+		$http.delete(globalConstants.HOST+"/library/books/" + bookId).success(function(){
 			bookService.getAllBooksService().then(function(backendBooksList){
 				$scope.books = backendBooksList;
 				$scope.pagination = Pagination.getNew(10);
@@ -66,7 +66,7 @@ lmsApp.controller("bookController", function($scope, $http, $window, $location, 
 	}
 	
 	$scope.searchBooks = function(){
-		var req = ($scope.searchString == "") ? "http://localhost:8080/library/books/all" : "http://localhost:8080/library/books/search/"+$scope.searchString ;
+		var req = ($scope.searchString == "") ? globalConstants.HOST+"/library/books/all" : globalConstants.HOST+"/library/books/search/"+$scope.searchString ;
 		$http.get(req).success(function(data){
 			$scope.books = data;
 			$scope.pagination = Pagination.getNew(10);

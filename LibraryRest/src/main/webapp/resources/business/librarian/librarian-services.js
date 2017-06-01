@@ -1,4 +1,4 @@
-lmsApp.factory("librarianService", function($http, librarianConstants){
+lmsApp.factory("librarianService", function($http, globalConstants){
 	
 	var branchPers = {};
 	var clientPers = {};
@@ -7,7 +7,7 @@ lmsApp.factory("librarianService", function($http, librarianConstants){
 		getAllBranches: function(){
 			var getBranchData = {};
 			return $http({
-				url: librarianConstants.GET_ALL_BRANCHES_URL
+				url: globalConstants.HOST+"/library/branches/all"
 			}).success(function(data){
 				getBranchData = data;
 			}).then(function(){
@@ -18,7 +18,7 @@ lmsApp.factory("librarianService", function($http, librarianConstants){
 		getAvailableBooks: function(branchId){
 			var bookx = {};
 			return $http({
-				url: librarianConstants.GET_BOOKS_IN_BRANCH_URL+branchId+"/available"
+				url: globalConstants.HOST+"/library/books/branch/"+branchId+"/available"
 			}).success(function(data){
 				bookx = data;
 			}).then(function(){
@@ -29,14 +29,14 @@ lmsApp.factory("librarianService", function($http, librarianConstants){
 		getBookCopiesInBranch: function(book, branch){
 			var books = {};
 			return $http({
-				url: "http://localhost:8080/library/books/branch/"+branch+"/"+book
+				url: globalConstants.HOST+"/library/books/branch/"+branch+"/"+book
 			})
 		},
 		
 		getBorrowerByPKService: function(borrowerId){
 			var getBorrowerByPkData = {};
 			return $http({
-				url: librarianConstants.GET_BORROWER_BY_PK_URL+borrowerId
+				url: globalConstants.HOST+"/library/borrowers/"+borrowerId
 			}).success(function(data){
 				getBorrowerByPkData = data;
 			}).then(function(){
@@ -47,7 +47,7 @@ lmsApp.factory("librarianService", function($http, librarianConstants){
 		getBranchByPKService: function(branchId){
 			var getBranchByPkData = {};
 			return $http({
-				url: librarianConstants.GET_BRANCH_BY_PK_URL+branchId
+				url: globalConstants.HOST+"/library/branches/"+branchId
 			}).success(function(data){
 				getBranchByPkData = data;
 			}).then(function(){
@@ -58,7 +58,7 @@ lmsApp.factory("librarianService", function($http, librarianConstants){
 		getLoansByCardNo: function(cardNo){
 			var loans = {};
 			return $http({
-				url: librarianConstants.GET_LOANS_BY_CARD_NO + cardNo
+				url: globalConstants.HOST+"/library/loans/client/" + cardNo
 			}).success(function(data){
 				loans = data;
 			}).then(function(){

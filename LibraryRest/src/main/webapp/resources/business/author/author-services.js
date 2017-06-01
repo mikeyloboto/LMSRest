@@ -1,9 +1,9 @@
-lmsApp.factory("authorService", function($http, authorConstants){
+lmsApp.factory("authorService", function($http, globalConstants){
 	return{
 		getAllAuthorsService: function(){
 			var getAuthorData = {};
 			return $http({
-				url: authorConstants.GET_ALL_AUTHORS_URL
+				url: globalConstants.HOST+"/library/authors/all"
 			}).success(function(data){
 				getAuthorData = data;
 			}).then(function(){
@@ -14,7 +14,7 @@ lmsApp.factory("authorService", function($http, authorConstants){
 		getAuthorByPKService: function(authorId){
 			var getAuthorByPkData = {};
 			return $http({
-				url: authorConstants.GET_AUTHOR_BY_PK_URL+authorId
+				url: globalConstants.HOST+"/library/authors/"+authorId
 			}).success(function(data){
 				getAuthorByPkData = data;
 			}).then(function(){
@@ -25,7 +25,7 @@ lmsApp.factory("authorService", function($http, authorConstants){
 		getAuthorInit: function(){
 			var authorInit = {};
 			return $http({
-				url: authorConstants.INIT_AUTHOR_URL
+				url: globalConstants.HOST+"/library/authors"
 			}).success(function(data){
 				authorInit = data;
 			}).then(function(){

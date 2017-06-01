@@ -1,9 +1,9 @@
-lmsApp.factory("bookService", function($http, bookConstants){
+lmsApp.factory("bookService", function($http, globalConstants){
 	return{
 		getAllBooksService: function(){
 			var getBookData = {};
 			return $http({
-				url: bookConstants.GET_ALL_BOOKS_URL
+				url: globalConstants.HOST+"/library/books/all"
 			}).success(function(data){
 				getBookData = data;
 			}).then(function(){
@@ -14,7 +14,7 @@ lmsApp.factory("bookService", function($http, bookConstants){
 		getBookByPKService: function(bookId){
 			var getBookByPkData = {};
 			return $http({
-				url: bookConstants.GET_BOOK_BY_PK_URL+bookId
+				url: globalConstants.HOST+"/library/books/"+bookId
 			}).success(function(data){
 				getBookByPkData = data;
 			}).then(function(){
@@ -25,7 +25,7 @@ lmsApp.factory("bookService", function($http, bookConstants){
 		getBookInit: function(){
 			var bookInit = {};
 			return $http({
-				url: bookConstants.INIT_BOOK_URL
+				url: globalConstants.HOST+"/library/books/init"
 			}).success(function(data){
 				bookInit = data;
 			}).then(function(){
@@ -36,7 +36,7 @@ lmsApp.factory("bookService", function($http, bookConstants){
 		getAllAuthors: function(){
 			var authors = {};
 			return $http({
-				url: "http://localhost:8080/library/authors/all"
+				url: globalConstants.HOST+"/library/authors/all"
 			}).success(function(data){
 				authors = data;
 			}).then(function(){
@@ -47,7 +47,7 @@ lmsApp.factory("bookService", function($http, bookConstants){
 		getAllPublishers: function(){
 			var pubs = {};
 			return $http({
-			url: "http://localhost:8080/library/publishers/all"
+			url: globalConstants.HOST+"/library/publishers/all"
 			}).success(function(data){
 				pubs = data;
 			}).then(function(){
@@ -58,7 +58,7 @@ lmsApp.factory("bookService", function($http, bookConstants){
 		getAllGenres: function(){
 			var genres = {};
 			return $http({
-				url: "http://localhost:8080/library/genres/all"
+				url: globalConstants.HOST+"/library/genres/all"
 			}).success(function(data){
 				genres = data;
 			}).then(function(){

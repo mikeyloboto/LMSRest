@@ -1,5 +1,5 @@
 lmsApp.controller("librarianLoginController", function($scope, $http, $window,
-		$location, librarianService, $filter, Pagination, $routeParams) {
+		$location, librarianService, $filter, Pagination, $routeParams, globalConstants) {
 
 	if ($location.$$path === "/librarian") {
 		librarianService.getAllBranches().then(function(backendBranchesList) {
@@ -26,7 +26,7 @@ lmsApp.controller("librarianController", function($scope, $http, $window,
 	}
 
 	$scope.saveBranch = function() {
-		$http.put("http://localhost:8080/library/branches", $scope.branch);
+		$http.put(globalConstants.HOST+"/library/branches", $scope.branch);
 	}
 
 	$scope.stockManage = function() {
@@ -123,7 +123,7 @@ lmsApp
 					$scope.updateCopies = function(cop) {
 						$http
 								.post(
-										"http://localhost:8080/library/books/branch/"
+										globalConstants.HOST+"/library/books/branch/"
 												+ $scope.branch.branchNo + "/"
 												+ $scope.editBook.bookId, cop)
 								.success(
@@ -148,7 +148,7 @@ lmsApp
 					$scope.addBooks = function() {
 						$http
 								.post(
-										"http://localhost:8080/library/books/branch/"
+										globalConstants.HOST+"/library/books/branch/"
 												+ $scope.branch.branchNo + "/"
 												+ $scope.copies.book.bookId
 												+ "/increment",

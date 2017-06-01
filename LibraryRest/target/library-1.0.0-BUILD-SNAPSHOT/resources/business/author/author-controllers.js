@@ -1,4 +1,4 @@
-lmsApp.controller("authorController", function($scope, $http, $window, $location, authorService, $filter, Pagination){
+lmsApp.controller("authorController", function($scope, $http, $window, $location, authorService, $filter, Pagination, globalConstants){
 	if($location.$$path === "/admin/authors"){
 		authorService.getAllAuthorsService().then(function(backendAuthorsList){
 			$scope.authors = backendAuthorsList;
@@ -9,7 +9,7 @@ lmsApp.controller("authorController", function($scope, $http, $window, $location
 	
 	
 	$scope.saveAuthor = function(){
-		$http.put("http://localhost:8080/library/authors", $scope.author).success(function(){
+		$http.put(globalConstants.HOST+"/library/authors", $scope.author).success(function(){
 			$scope.authorModal = false;
 			authorService.getAllAuthorsService().then(function(backendAuthorsList){
 				$scope.authors = backendAuthorsList;
@@ -20,7 +20,7 @@ lmsApp.controller("authorController", function($scope, $http, $window, $location
 	}
 	
 	$scope.deleteAuthor = function(authorId){
-		$http.delete("http://localhost:8080/library/authors/" + authorId).success(function(){
+		$http.delete(globalConstants.HOST+"/library/authors/" + authorId).success(function(){
 			authorService.getAllAuthorsService().then(function(backendAuthorsList){
 				$scope.authors = backendAuthorsList;
 				$scope.pagination = Pagination.getNew(10);
@@ -52,7 +52,7 @@ lmsApp.controller("authorController", function($scope, $http, $window, $location
 	}
 	
 	$scope.searchAuthors = function(){
-		var req = ($scope.searchString == "") ? "http://localhost:8080/library/authors/all" : "http://localhost:8080/library/authors/search/"+$scope.searchString ;
+		var req = ($scope.searchString == "") ? globalConstants.HOST+"/library/authors/all" : globalConstants.HOST+"/library/authors/search/"+$scope.searchString ;
 		$http.get(req).success(function(data){
 			$scope.authors = data;
 			$scope.pagination = Pagination.getNew(10);

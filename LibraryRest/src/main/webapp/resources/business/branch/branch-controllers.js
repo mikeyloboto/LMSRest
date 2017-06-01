@@ -1,4 +1,4 @@
-lmsApp.controller("branchController", function($scope, $http, $window, $location, branchService, $filter, Pagination){
+lmsApp.controller("branchController", function($scope, $http, $window, $location, branchService, $filter, Pagination, globalConstants){
 	if($location.$$path === "/admin/branches"){
 		branchService.getAllBranchesService().then(function(backendBranchesList){
 			$scope.branches = backendBranchesList;
@@ -9,7 +9,7 @@ lmsApp.controller("branchController", function($scope, $http, $window, $location
 	
 	
 	$scope.saveBranch = function(){
-		$http.put("http://localhost:8080/library/branches", $scope.branch).success(function(){
+		$http.put(globalConstants.HOST+"/library/branches", $scope.branch).success(function(){
 			$scope.branchModal = false;
 			branchService.getAllBranchesService().then(function(backendBranchesList){
 				$scope.branches = backendBranchesList;
@@ -20,7 +20,7 @@ lmsApp.controller("branchController", function($scope, $http, $window, $location
 	}
 	
 	$scope.deleteBranch = function(branchId){
-		$http.delete("http://localhost:8080/library/branches/" + branchId).success(function(){
+		$http.delete(globalConstants.HOST+"/library/branches/" + branchId).success(function(){
 			branchService.getAllBranchesService().then(function(backendBranchesList){
 				$scope.branches = backendBranchesList;
 				$scope.pagination = Pagination.getNew(10);
@@ -52,7 +52,7 @@ lmsApp.controller("branchController", function($scope, $http, $window, $location
 	}
 	
 	$scope.searchBranches = function(){
-		var req = ($scope.searchString == "") ? "http://localhost:8080/library/branches/all" : "http://localhost:8080/library/branches/search/"+$scope.searchString ;
+		var req = ($scope.searchString == "") ? globalConstants.HOST+"/library/branches/all" : globalConstants.HOST+"/library/branches/search/"+$scope.searchString ;
 		$http.get(req).success(function(data){
 			$scope.branches = data;
 			$scope.pagination = Pagination.getNew(10);

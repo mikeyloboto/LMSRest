@@ -1,9 +1,9 @@
-lmsApp.factory("genreService", function($http, genreConstants){
+lmsApp.factory("genreService", function($http, globalConstants){
 	return{
 		getAllGenresService: function(){
 			var getGenreData = {};
 			return $http({
-				url: genreConstants.GET_ALL_GENRES_URL
+				url: globalConstants.HOST+"/library/genres/all"
 			}).success(function(data){
 				getGenreData = data;
 			}).then(function(){
@@ -14,7 +14,7 @@ lmsApp.factory("genreService", function($http, genreConstants){
 		getGenreByPKService: function(genreId){
 			var getGenreByPkData = {};
 			return $http({
-				url: genreConstants.GET_GENRE_BY_PK_URL+genreId
+				url: globalConstants.HOST+"/library/genres/"+genreId
 			}).success(function(data){
 				getGenreByPkData = data;
 			}).then(function(){
@@ -25,7 +25,7 @@ lmsApp.factory("genreService", function($http, genreConstants){
 		getGenreInit: function(){
 			var genreInit = {};
 			return $http({
-				url: genreConstants.INIT_GENRE_URL
+				url: globalConstants.HOST+"/library/genres/init"
 			}).success(function(data){
 				genreInit = data;
 			}).then(function(){
