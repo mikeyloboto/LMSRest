@@ -23,3 +23,10 @@ hs_err_pid*
 
 # maven artifacts
 target/
+
+# eclipse garbage
+.classpath
+.project
+.springBeans
+.tern-project
+.settings/
