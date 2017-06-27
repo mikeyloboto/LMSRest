@@ -26,6 +26,7 @@ import com.gcit.library.entity.Branch;
 import com.gcit.library.entity.Genre;
 import com.gcit.library.entity.Loan;
 import com.gcit.library.entity.Publisher;
+import com.gcit.library.utility.UselessAnnotation;
 
 @RestController
 public class AdminService {
@@ -57,6 +58,7 @@ public class AdminService {
 	// @Transactional
 	// @RequestMapping(value = "/authors", method = RequestMethod.PUT,
 	// consumes="application/json")
+	@UselessAnnotation
 	@Deprecated
 	public void addAuthor(@RequestBody Author author) throws SQLException {
 		try {
@@ -70,6 +72,7 @@ public class AdminService {
 	// @RequestMapping(value = "/addBook", method = RequestMethod.POST, consumes
 	// = "application/json")
 	@Deprecated
+	@UselessAnnotation
 	public void addBook(@RequestBody Book book) throws SQLException {
 		try {
 			Integer bookId = bdao.addBookWithID(book);
@@ -92,6 +95,7 @@ public class AdminService {
 	// @RequestMapping(value = "/addBorrower", method = RequestMethod.POST,
 	// consumes = "application/json")
 	@Deprecated
+	@UselessAnnotation
 	public void addBorrower(@RequestBody Borrower g) throws SQLException {
 		try {
 			bordao.addBorrower(g);
@@ -104,6 +108,7 @@ public class AdminService {
 	// @RequestMapping(value = "/addBranch", method = RequestMethod.POST,
 	// consumes = "application/json")
 	@Deprecated
+	@UselessAnnotation
 	public void addBranch(@RequestBody Branch b) throws SQLException {
 		try {
 			brdao.addBranch(b);
@@ -116,6 +121,7 @@ public class AdminService {
 	// @RequestMapping(value = "/addGenre", method = RequestMethod.POST,
 	// consumes = "application/json")
 	@Deprecated
+	@UselessAnnotation
 	public void addGenre(@RequestBody Genre g) throws SQLException {
 		try {
 			gdao.addGenre(g);
@@ -128,6 +134,7 @@ public class AdminService {
 	// @RequestMapping(value = "/addLoan", method = RequestMethod.POST, consumes
 	// = "application/json")
 	@Deprecated
+	@UselessAnnotation
 	public void addLoan(@RequestBody Loan g) throws SQLException {
 		try {
 			ldao.addLoanBase(g);
@@ -140,6 +147,7 @@ public class AdminService {
 	// @RequestMapping(value = "/addPublisher", method = RequestMethod.POST,
 	// consumes = "application/json")
 	@Deprecated
+	@UselessAnnotation
 	public void addPublisher(@RequestBody Publisher p) throws SQLException {
 		try {
 			pdao.addPublisher(p);
@@ -169,6 +177,7 @@ public class AdminService {
 		}
 	}
 
+	 
 	@RequestMapping(value = "/authors/all", method = RequestMethod.GET, produces = "application/json")
 	public List<Author> getAllAuthors() throws SQLException {
 		try {
@@ -189,6 +198,7 @@ public class AdminService {
 		return null;
 	}
 
+	 
 	@RequestMapping(value = "/books/all", method = RequestMethod.GET, produces = "application/json")
 	public List<Book> getAllBooks() throws SQLException {
 		try {
@@ -229,6 +239,7 @@ public class AdminService {
 		return null;
 	}
 
+	 
 	@RequestMapping(value = "/branches/all", method = RequestMethod.GET, produces = "application/json")
 	public List<Branch> getAllBranches() throws SQLException {
 		try {
@@ -249,6 +260,8 @@ public class AdminService {
 		return null;
 	}
 
+	
+	 
 	@RequestMapping(value = "/genres/all", method = RequestMethod.GET, produces = "application/json")
 	public List<Genre> getAllGenres() throws SQLException {
 		try {
@@ -269,6 +282,8 @@ public class AdminService {
 		return null;
 	}
 
+	
+	 
 	@RequestMapping(value = "/loans/all", method = RequestMethod.GET, produces = "application/json")
 	public List<Loan> getAllLoans() throws SQLException {
 		try {
@@ -297,6 +312,8 @@ public class AdminService {
 		return null;
 	}
 
+	
+	 
 	@RequestMapping(value = "/publishers/all", method = RequestMethod.GET, produces = "application/json")
 	public List<Publisher> getAllPublishers() throws SQLException {
 		try {
